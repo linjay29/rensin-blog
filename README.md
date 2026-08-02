@@ -1,4 +1,4 @@
-# 林士傑醫師｜仁心骨科診所 — 部落格
+# 林士傑醫師/屏東仁心骨科診所 — 部落格
 
 純靜態網站，無框架、無打包工具。只有一支 Node 腳本負責維護「最後更新日期」與首頁卡片索引。
 
@@ -127,22 +127,30 @@ update public.page_counter set count = 0 where id like 'rensin-%';
 2. **github-pages** — 用 `actions/deploy-pages` 發布
 3. **cloudflare-pages** — 用 `wrangler-action` 發布到 Cloudflare Pages 專案 `rensin-blog`
 
-### ⚠️ GitHub Pages 需要 public repo
+目前狀態：repo 為 **public**，GitHub Pages 已啟用並上線於
+<https://linjay29.github.io/rensin-blog/>。
 
-免費方案的 GitHub Pages **不支援 private repository**（API 會回 422
-`Your current plan does not support GitHub Pages for this repository`）。
-目前這個 repo 是 private，所以 `github-pages` 那個 job 會失敗。
+### ⚠️ 兩個踩過的坑
 
-要發布時把 repo 轉公開：
+**1. 免費方案的 GitHub Pages 不支援 private repository。**
+repo 是私有時，建立 Pages 站台的 API 會回 422
+`Your current plan does not support GitHub Pages for this repository`。
+若日後又轉回 private，Pages 會失效。切換指令：
 
 ```bash
 gh repo edit linjay29/rensin-blog --visibility public --accept-visibility-change-consequences
 ```
 
-轉公開後下一次 push，`configure-pages` 的 `enablement: true` 會自動開啟 Pages，
-不用進後台設定。
+**2. workflow 的 `GITHUB_TOKEN` 無法「建立」Pages 站台。**
+即使 repo 已公開、`configure-pages` 設了 `enablement: true`，仍會失敗於
+`Create Pages site failed: Resource not accessible by integration`。
+站台必須先用個人帳號建立一次（之後的部署 workflow 就能自己跑）：
 
-（Cloudflare Pages 沒有這個限制，private repo 也能部署，只要 secrets 設好。）
+```bash
+gh api -X POST repos/linjay29/rensin-blog/pages -f "build_type=workflow"
+```
+
+（Cloudflare Pages 沒有這兩個限制，private repo 也能部署，只要 secrets 設好。）
 
 ### Cloudflare 所需的 Repository secrets
 

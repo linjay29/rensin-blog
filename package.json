@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "林士傑醫師｜仁心骨科診所 — 靜態部落格",
+  "description": "林士傑醫師/屏東仁心骨科診所 — 靜態部落格",
   "scripts": {
     "build": "node tools/build.mjs",
     "new": "node tools/new-post.mjs",
