@@ -127,6 +127,23 @@ update public.page_counter set count = 0 where id like 'rensin-%';
 2. **github-pages** — 用 `actions/deploy-pages` 發布
 3. **cloudflare-pages** — 用 `wrangler-action` 發布到 Cloudflare Pages 專案 `rensin-blog`
 
+### ⚠️ GitHub Pages 需要 public repo
+
+免費方案的 GitHub Pages **不支援 private repository**（API 會回 422
+`Your current plan does not support GitHub Pages for this repository`）。
+目前這個 repo 是 private，所以 `github-pages` 那個 job 會失敗。
+
+要發布時把 repo 轉公開：
+
+```bash
+gh repo edit linjay29/rensin-blog --visibility public --accept-visibility-change-consequences
+```
+
+轉公開後下一次 push，`configure-pages` 的 `enablement: true` 會自動開啟 Pages，
+不用進後台設定。
+
+（Cloudflare Pages 沒有這個限制，private repo 也能部署，只要 secrets 設好。）
+
 ### Cloudflare 所需的 Repository secrets
 
 **Settings → Secrets and variables → Actions** 新增：
