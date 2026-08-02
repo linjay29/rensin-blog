@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rensin-blog.pages.dev/sitemap.xml
+Sitemap: https://linjay29.github.io/rensin-blog/sitemap.xml

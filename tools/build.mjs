@@ -28,7 +28,7 @@ const PUBLIC = path.join(ROOT, "public");
 const INDEX = path.join(PUBLIC, "index.html");
 
 /* 正式站網址，只用來產生 sitemap.xml。換網域時改這裡。 */
-const SITE_URL = "https://rensin-blog.pages.dev";
+const SITE_URL = "https://linjay29.github.io/rensin-blog";
 
 /* 文章資料夾命名規則：20260802-introduction */
 const SLUG_RE = /^\d{8}-[a-z0-9][a-z0-9-]*$/;
