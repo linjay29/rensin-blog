@@ -1,0 +1,316 @@
+/* ===========================================================================
+   林士傑醫師 · 仁心骨科診所 — 共用樣式
+   設計重點：專業醫療感 + 手機優先，任何情況都不破框
+   =========================================================================== */
+
+:root{
+  --brand:#0e5c6b;          /* 深藍綠：主色 */
+  --brand-dark:#0a424e;
+  --brand-soft:#e6f2f4;
+  --accent:#c8873f;         /* 暖銅：點綴 */
+  --bg:#f6f8f9;
+  --surface:#ffffff;
+  --line:#dde5e8;
+  --ink:#1b2a2e;
+  --ink-mid:#4a5f66;
+  --ink-dim:#71858c;
+  --radius:14px;
+  --wrap:820px;             /* 內文欄寬：HERO 圖不得超過此寬度 */
+  --wrap-wide:1080px;
+  --shadow:0 1px 2px rgba(15,50,60,.05), 0 8px 24px rgba(15,50,60,.06);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  -webkit-text-size-adjust:100%;   /* 防止 iOS 橫置時自動放大字級 */
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,
+              BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;               /* 最後一道防線：整頁不橫向捲動 */
+}
+
+/* --- 全域防破框 ---------------------------------------------------------- */
+/* 中文長句不需斷字，但網址、英文長詞、藥名可能撐破容器 */
+p,li,dd,dt,h1,h2,h3,h4,blockquote,figcaption,td,th,summary{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+img,svg,video,iframe{max-width:100%;height:auto}
+/* flex/grid 子項預設 min-width:auto 會被內容撐開，改掉才不會溢出 */
+.card,.grid > *,.flex > *{min-width:0}
+
+.wrap{
+  width:100%;
+  max-width:var(--wrap);
+  margin-inline:auto;
+  padding-inline:clamp(16px,5vw,28px);
+}
+.wrap-wide{max-width:var(--wrap-wide)}
+
+a{color:var(--brand);text-underline-offset:3px}
+a:hover{color:var(--brand-dark)}
+
+/* ===========================  頁首導覽  ================================== */
+.site-header{
+  background:var(--surface);
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:50;
+}
+.site-header .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;min-height:62px;flex-wrap:wrap;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-weight:700;color:var(--ink);text-decoration:none;
+  font-size:clamp(.98rem,3.4vw,1.08rem);letter-spacing:.01em;
+  min-width:0;
+}
+.brand .mark{
+  flex:none;width:30px;height:30px;border-radius:9px;
+  background:linear-gradient(140deg,var(--brand),#1c7f8f);
+  display:grid;place-items:center;color:#fff;font-size:.85rem;font-weight:800;
+}
+.brand .name{min-width:0;overflow-wrap:anywhere}
+.nav{display:flex;gap:clamp(10px,3vw,20px);flex-wrap:wrap}
+.nav a{
+  color:var(--ink-mid);text-decoration:none;font-size:.9rem;font-weight:600;
+  white-space:nowrap;
+}
+.nav a:hover{color:var(--brand)}
+
+/* =============================  HERO  ==================================== */
+.hero{
+  background:linear-gradient(175deg,#0e5c6b 0%,#0a424e 100%);
+  color:#eaf4f6;
+  padding:clamp(38px,9vw,68px) 0 clamp(34px,8vw,56px);
+}
+.hero .eyebrow{
+  margin:0 0 14px;font-size:.74rem;font-weight:700;
+  letter-spacing:.2em;color:#8fc8d2;text-transform:uppercase;
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(1.65rem,6.4vw,2.7rem);
+  line-height:1.28;font-weight:800;letter-spacing:-.01em;
+}
+.hero .lede{
+  margin:18px 0 0;
+  font-size:clamp(.98rem,3.2vw,1.1rem);
+  color:#c4dde3;max-width:36em;
+}
+.hero .meta{
+  margin:22px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px;
+  font-size:.85rem;color:#9dcbd4;
+}
+.hero .meta span{display:inline-flex;align-items:center;gap:6px;min-width:0}
+
+/* HERO 圖：等比例縮放，寬度永遠不超過內文欄寬 --------------------------- */
+.hero-figure{
+  margin:clamp(26px,6vw,38px) auto 0;
+  width:100%;
+  max-width:var(--wrap);        /* = 內容文字區寬度，不會更寬 */
+}
+.hero-figure img{
+  display:block;width:100%;height:auto;   /* 等比例，不變形 */
+  aspect-ratio:1023/687;object-fit:cover;
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.16);
+  background:#0a424e;
+}
+.hero-figure figcaption{
+  margin-top:10px;font-size:.76rem;line-height:1.6;
+  color:#8fb8c0;text-align:center;
+}
+.hero-figure figcaption a{color:#b9dbe2}
+
+/* ============================  區塊  ===================================== */
+.section{padding:clamp(40px,8vw,64px) 0}
+.section + .section{border-top:1px solid var(--line)}
+.section h2{
+  margin:0 0 6px;
+  font-size:clamp(1.25rem,4.6vw,1.6rem);
+  font-weight:750;letter-spacing:-.01em;
+}
+.section .sub{margin:0 0 26px;color:var(--ink-dim);font-size:.94rem}
+
+/* ==========================  文章卡片索引  =============================== */
+.card-grid{
+  display:grid;gap:clamp(14px,3vw,20px);
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));
+}
+.card{
+  display:flex;flex-direction:column;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:clamp(18px,4.5vw,24px);
+  text-decoration:none;color:inherit;
+  box-shadow:var(--shadow);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.card:hover{
+  transform:translateY(-2px);border-color:#b9d3d9;
+  box-shadow:0 2px 4px rgba(15,50,60,.06),0 14px 32px rgba(15,50,60,.1);
+}
+.card .tag{
+  align-self:flex-start;
+  font-size:.72rem;font-weight:700;letter-spacing:.06em;
+  color:var(--brand);background:var(--brand-soft);
+  padding:4px 10px;border-radius:999px;margin-bottom:12px;
+  max-width:100%;
+}
+.card h3{
+  margin:0 0 10px;font-size:clamp(1.02rem,3.6vw,1.14rem);
+  line-height:1.5;font-weight:700;
+}
+.card p{margin:0 0 16px;color:var(--ink-mid);font-size:.9rem;line-height:1.75}
+.card .card-foot{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 14px;
+  font-size:.78rem;color:var(--ink-dim);
+}
+.card .card-foot span{display:inline-flex;align-items:center;gap:5px;min-width:0}
+
+/* =============================  內文  ==================================== */
+.prose{font-size:clamp(1rem,3.3vw,1.06rem)}
+.prose h2{
+  margin:2.2em 0 .6em;font-size:clamp(1.2rem,4.4vw,1.45rem);
+  font-weight:750;line-height:1.45;
+  padding-left:14px;border-left:4px solid var(--brand);
+}
+.prose h3{
+  margin:1.8em 0 .5em;font-size:clamp(1.05rem,3.8vw,1.18rem);
+  font-weight:700;line-height:1.55;color:var(--brand-dark);
+}
+.prose p{margin:0 0 1.25em}
+.prose ul,.prose ol{margin:0 0 1.35em;padding-left:1.5em}
+.prose li{margin-bottom:.5em}
+.prose li::marker{color:var(--brand)}
+.prose strong{font-weight:700;color:var(--ink)}
+.prose hr{border:0;border-top:1px solid var(--line);margin:2.4em 0}
+
+.callout{
+  margin:1.8em 0;padding:clamp(16px,4vw,22px);
+  background:var(--brand-soft);border:1px solid #c5dfe4;
+  border-left:4px solid var(--brand);
+  border-radius:0 var(--radius) var(--radius) 0;
+}
+.callout .label{
+  display:block;font-size:.72rem;font-weight:800;letter-spacing:.16em;
+  color:var(--brand);margin-bottom:8px;
+}
+.callout p:last-child{margin-bottom:0}
+
+.warn{background:#fdf4e8;border-color:#eed9b8;border-left-color:var(--accent)}
+.warn .label{color:#9a6420}
+
+/* 表格：手機上獨立橫捲，不撐破頁面 -------------------------------------- */
+.table-scroll{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  margin:1.6em 0;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);
+}
+/* 預設：表格塞得進畫面，文字自動換行，手機上不需要橫捲 */
+.table-scroll table{border-collapse:collapse;width:100%}
+.table-scroll th,.table-scroll td{
+  padding:11px 14px;text-align:center;
+  border-bottom:1px solid var(--line);font-size:.88rem;
+}
+.table-scroll thead th{
+  background:var(--brand-soft);color:var(--brand-dark);
+  font-weight:700;font-size:.82rem;
+}
+.table-scroll tbody tr:last-child td{border-bottom:0}
+
+/* --kv：「項目／內容」兩欄式資訊表，左欄標籤不換行、右欄靠左讀起來順 */
+.table-scroll--kv td:first-child{
+  white-space:nowrap;color:var(--ink-dim);font-weight:600;width:1%;
+}
+.table-scroll--kv td:last-child{text-align:left}
+
+/* --wide：欄位多、真的塞不下的比較表，才在自己的容器內橫向捲動 */
+.table-scroll--wide table{min-width:520px}
+.table-scroll--wide th,.table-scroll--wide td{white-space:nowrap}
+.table-note{
+  margin:-1em 0 1.6em;font-size:.8rem;color:var(--ink-dim);text-align:center;
+}
+
+/* ==========================  文章頁首資訊  =============================== */
+.post-meta{
+  display:flex;flex-wrap:wrap;gap:8px 16px;
+  margin:0;padding:16px 0;font-size:.84rem;color:var(--ink-dim);
+  border-bottom:1px solid var(--line);
+}
+.post-meta .author{color:var(--ink-mid);font-weight:600}
+.post-meta span{display:inline-flex;align-items:center;gap:6px;min-width:0}
+
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  margin:clamp(26px,6vw,36px) 0 0;
+  font-size:.9rem;font-weight:600;text-decoration:none;
+}
+.back-link:hover{text-decoration:underline}
+
+/* =========================  醫療免責聲明  =============================== */
+.disclaimer{
+  margin-top:clamp(30px,7vw,44px);padding:clamp(16px,4vw,20px);
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+  font-size:.83rem;line-height:1.75;color:var(--ink-dim);
+}
+.disclaimer strong{color:var(--ink-mid)}
+
+/* ============================  頁尾  ===================================== */
+.site-footer{
+  background:#0a2b33;color:#9fc0c7;
+  padding:clamp(34px,7vw,48px) 0 clamp(26px,6vw,34px);
+  font-size:.86rem;line-height:1.8;
+}
+.site-footer h4{
+  margin:0 0 10px;color:#e3f1f3;font-size:.94rem;font-weight:700;
+}
+.footer-grid{
+  display:grid;gap:clamp(20px,5vw,32px);
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));
+}
+.site-footer a{color:#a8ced6}
+.site-footer ul{margin:0;padding:0;list-style:none}
+.site-footer li{margin-bottom:5px;overflow-wrap:anywhere}
+.credit{
+  margin-top:clamp(22px,5vw,30px);padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.12);
+  font-size:.78rem;color:#7fa5ad;
+}
+.credit p{margin:0 0 6px}
+
+/* ==========================  瀏覽計數器  ================================ */
+.counter[hidden]{display:none}
+.counter .num{font-variant-numeric:tabular-nums;font-weight:700}
+.counter.is-loading .num{opacity:.45}
+
+/* ==========================  無障礙 / 動態  ============================= */
+.visually-hidden{
+  position:absolute!important;width:1px;height:1px;
+  margin:-1px;padding:0;border:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
+/* 極窄螢幕（320px 級）再收一次內距，確保不擠爆 */
+@media (max-width:360px){
+  body{font-size:16px}
+  .wrap{padding-inline:14px}
+  .nav{gap:10px}
+  .nav a{font-size:.84rem}
+}
