@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blog.rensin.tw/sitemap.xml
+Sitemap: https://rensin-blog.pages.dev/sitemap.xml
