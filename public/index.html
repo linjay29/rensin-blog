@@ -10,10 +10,11 @@
 <meta property="og:description" content="骨科衛教、肌力訓練與運動傷害預防，以及屏東仁心骨科診所的看診須知。">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
-<link rel="canonical" href="https://linjay29.github.io/rensin-blog/">
+<link rel="canonical" href="https://rensin-clinic.sclin.net/">
 <link rel="stylesheet" href="assets/site.css">
 <script src="config.js"></script>
 <script src="assets/counter.js" defer></script>
+<script src="assets/filter.js" defer></script>
 </head>
 <body>
 
@@ -91,48 +92,64 @@
   <section class="section" id="posts">
     <div class="wrap wrap-wide">
       <h2>文章</h2>
-      <p class="sub">最新的在前，日期為最後更新時間。</p>
+      <p class="sub">依發表日期排序，最新的在前。點分類可以只看某一類。</p>
+
+      <!-- ⚠️ 篩選鈕由 tools/build.mjs 自動產生，請勿手動編輯。 -->
+      <div class="chips" role="group" aria-label="文章分類篩選">
+<!-- TAGS:START -->
+        <button type="button" class="chip is-on" data-filter="*">全部 <b>4</b></button>
+        <button type="button" class="chip" data-filter="骨科衛教">骨科衛教 <b>1</b></button>
+        <button type="button" class="chip" data-filter="健身訓練">健身訓練 <b>1</b></button>
+        <button type="button" class="chip" data-filter="診所公告">診所公告 <b>1</b></button>
+        <button type="button" class="chip" data-filter="運動醫學">運動醫學 <b>1</b></button>
+<!-- TAGS:END -->
+      </div>
+      <p class="filter-empty" hidden>這個分類還沒有文章。</p>
 
       <div class="card-grid">
 <!-- POSTS:START -->
-        <a class="card" href="20260802-trail-running/">
+        <a class="card" href="20260802-trail-running/" data-tag="運動醫學">
           <span class="tag">運動醫學</span>
           <h3>越野跑不受傷的三個準備：腳踝、膝蓋、和你的誠實</h3>
           <p>從骨科醫師兼跑者的角度，談越野跑最常見的傷害、賽前該練什麼，以及什麼時候該承認自己該退賽。</p>
           <span class="card-foot">
             <span>林士傑醫師</span>
-            <span>更新 2026-08-02</span>
+            <span>2026-08-02</span>
+            <span>更新 2026-08-26</span>
             <span class="counter" data-counter-view="rensin-20260802-trail-running" hidden><b class="num">0</b> 次瀏覽</span>
           </span>
         </a>
-        <a class="card" href="20260802-introduction/">
-          <span class="tag">關於我</span>
-          <h3>開張了：一個骨科醫師想在這裡寫什麼</h3>
-          <p>從國防醫學院到太平島醫官，再到屏東開業。介紹我自己、我的專長，以及這個部落格打算寫些什麼。</p>
-          <span class="card-foot">
-            <span>林士傑醫師</span>
-            <span>更新 2026-08-02</span>
-            <span class="counter" data-counter-view="rensin-20260802-introduction" hidden><b class="num">0</b> 次瀏覽</span>
-          </span>
-        </a>
-        <a class="card" href="20260802-frozen-shoulder/">
+        <a class="card" href="20260802-frozen-shoulder/" data-tag="骨科衛教">
           <span class="tag">骨科衛教</span>
           <h3>肩膀舉不起來就是五十肩嗎？先分清楚三件事</h3>
           <p>沾黏性肩關節囊炎、旋轉肌袖問題、肩夾擠，症狀很像但處理方式差很多。談談怎麼分辨與各階段該做什麼。</p>
           <span class="card-foot">
             <span>林士傑醫師</span>
-            <span>更新 2026-08-02</span>
+            <span>2026-08-02</span>
+            <span>更新 2026-08-26</span>
             <span class="counter" data-counter-view="rensin-20260802-frozen-shoulder" hidden><b class="num">0</b> 次瀏覽</span>
           </span>
         </a>
-        <a class="card" href="20260802-clinic-guide/">
+        <a class="card" href="20260802-clinic-guide/" data-tag="診所公告">
           <span class="tag">診所公告</span>
           <h3>屏東仁心骨科診所：掛號、門診、復健注意事項</h3>
           <p>現場掛號時間、看診規則、復健流程與停車資訊。第一次來診所之前，先看這一篇會順很多。</p>
           <span class="card-foot">
             <span>林士傑醫師</span>
-            <span>更新 2026-08-02</span>
+            <span>2026-08-02</span>
+            <span>更新 2026-08-26</span>
             <span class="counter" data-counter-view="rensin-20260802-clinic-guide" hidden><b class="num">0</b> 次瀏覽</span>
+          </span>
+        </a>
+        <a class="card" href="20190621-whey-chest/" data-tag="健身訓練">
+          <span class="tag">健身訓練</span>
+          <h3>健身＋乳清＝豐胸？真的是這樣嗎</h3>
+          <p>訓練加上足夠的蛋白質，可以讓胸型變得堅挺，但那是胸大肌變厚，不是乳房變大。附三個在家就能做的胸肌動作示範。</p>
+          <span class="card-foot">
+            <span>林士傑醫師</span>
+            <span>2019-06-21</span>
+            <span>更新 2026-08-26</span>
+            <span class="counter" data-counter-view="rensin-20190621-whey-chest" hidden><b class="num">0</b> 次瀏覽</span>
           </span>
         </a>
 <!-- POSTS:END -->
@@ -188,17 +205,18 @@
       <div>
         <h4>文章分類</h4>
         <ul>
-          <li><a href="20260802-introduction/">關於我</a></li>
-          <li><a href="20260802-clinic-guide/">診所公告</a></li>
-          <li><a href="20260802-frozen-shoulder/">骨科衛教</a></li>
-          <li><a href="20260802-trail-running/">運動醫學</a></li>
+          <li><a href="#about">關於我</a></li>
+          <li><a href="./?tag=%E8%A8%BA%E6%89%80%E5%85%AC%E5%91%8A#posts">診所公告</a></li>
+          <li><a href="./?tag=%E9%AA%A8%E7%A7%91%E8%A1%9B%E6%95%99#posts">骨科衛教</a></li>
+          <li><a href="./?tag=%E9%81%8B%E5%8B%95%E9%86%AB%E5%AD%B8#posts">運動醫學</a></li>
+          <li><a href="./?tag=%E5%81%A5%E8%BA%AB%E8%A8%93%E7%B7%B4#posts">健身訓練</a></li>
         </ul>
       </div>
       <div>
         <h4>本站</h4>
         <ul>
           <li>作者：林士傑醫師</li>
-          <li>最後更新：<span data-site-updated>2026-08-02</span></li>
+          <li>最後更新：<span data-site-updated>2026-08-26</span></li>
         </ul>
       </div>
     </div>

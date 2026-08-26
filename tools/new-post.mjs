@@ -3,13 +3,19 @@
    新增一篇文章
    ---------------------------------------------------------------------------
    用法：
-     node tools/new-post.mjs <slug> "文章標題" ["分類"]
+     node tools/new-post.mjs <slug> "文章標題" ["分類"] [--date=YYYY-MM-DD] [--origin=網址]
 
-   例：
+   例（新文章，用今天的日期）：
      node tools/new-post.mjs knee-arthritis "退化性膝關節炎的三個階段" "骨科衛教"
 
-   會建立 public/<今天日期>-<slug>/index.html（例如 20260802-knee-arthritis/），
-   接著自動跑一次 build.mjs，首頁就會多出一張卡片、排在最前面。
+   例（從舊站搬文章，用原始發表日期）：
+     node tools/new-post.mjs whey-chest "健身＋乳清＝豐胸？" "健身訓練" \
+       --date=2019-06-21 --origin=https://drjaylife.blogspot.com/2019/06/blog-post_21.html
+
+   會建立 public/<日期>-<slug>/index.html（例如 20190621-whey-chest/），
+   接著自動跑一次 build.mjs 重建首頁。
+
+   ⚠️ 搬舊文一定要給 --date，否則首頁排序會把 2019 年的文章排到最前面。
    =========================================================================== */
 
 import fs from "node:fs";
@@ -20,13 +26,25 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
 
-const [, , rawSlug, title, tag = "骨科衛教"] = process.argv;
+/* 先把 --flag=value 挑掉，剩下的才是位置參數 */
+const argv = process.argv.slice(2);
+const flags = Object.fromEntries(
+  argv
+    .filter((a) => a.startsWith("--"))
+    .map((a) => {
+      const i = a.indexOf("=");
+      return i === -1 ? [a.slice(2), true] : [a.slice(2, i), a.slice(i + 1)];
+    })
+);
+const [rawSlug, title, tag = "骨科衛教"] = argv.filter((a) => !a.startsWith("--"));
 
 if (!rawSlug || !title) {
-  console.error(`用法： node tools/new-post.mjs <slug> "文章標題" ["分類"]
+  console.error(`用法： node tools/new-post.mjs <slug> "文章標題" ["分類"] [--date=YYYY-MM-DD] [--origin=網址]
 
-  slug   只能用小寫英文、數字與連字號，例如 knee-arthritis
-  分類   預設「骨科衛教」，其他常用：診所公告、運動醫學、關於我`);
+  slug     只能用小寫英文、數字與連字號，例如 knee-arthritis
+  分類     預設「骨科衛教」，其他常用：診所公告、運動醫學、關於我、健身訓練
+  --date   發表日期，不給就用今天。搬舊文請務必指定原始發表日期。
+  --origin 舊站原文網址，給了就會在文章開頭自動加一行出處註記。`);
   process.exit(1);
 }
 
@@ -35,10 +53,17 @@ if (!/^[a-z0-9][a-z0-9-]*$/.test(rawSlug)) {
   process.exit(1);
 }
 
+/* 發表日期：--date 指定，否則今天 */
 const now = new Date();
 const p = (n) => String(n).padStart(2, "0");
-const stamp = `${now.getFullYear()}${p(now.getMonth() + 1)}${p(now.getDate())}`;
-const iso = `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}`;
+const today = `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}`;
+
+const iso = flags.date === undefined ? today : String(flags.date);
+if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+  console.error(`--date「${iso}」格式不對，要 YYYY-MM-DD，例如 --date=2019-06-21`);
+  process.exit(1);
+}
+const stamp = iso.replace(/-/g, "");
 
 const slug = `${stamp}-${rawSlug}`;
 const dir = path.join(PUBLIC, slug);
@@ -54,6 +79,20 @@ const esc = (s) =>
 const T = esc(title);
 const TAG = esc(tag);
 const counter = `rensin-${slug}`;
+
+/* --origin：舊站轉錄用。給了就多寫兩個 meta 與一段出處註記。 */
+const ORIGIN = typeof flags.origin === "string" ? esc(flags.origin) : "";
+const originMeta = ORIGIN
+  ? `\n<!-- 舊站轉錄：原文出處與原始發表時間，供日後對照 -->\n` +
+    `<meta name="post:origin"      content="${ORIGIN}">\n` +
+    `<meta name="post:origin-date" content="${iso}">\n`
+  : "";
+const originNote = ORIGIN
+  ? `        <p class="origin-note">
+          本文原載於舊站 <a href="${ORIGIN}" rel="noopener">原文連結</a>（${iso}），
+          搬遷至此並重新排版，內容未作實質更動。
+        </p>\n\n`
+  : "";
 
 const html = `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -76,7 +115,7 @@ const html = `<!DOCTYPE html>
 <meta name="post:published" content="${iso}">
 <meta name="post:updated"   content="${iso}">
 <meta name="post:counter"   content="${counter}">
-
+${originMeta}
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../config.js"></script>
 <script src="../assets/counter.js" defer></script>
@@ -128,7 +167,7 @@ const html = `<!DOCTYPE html>
     <div class="wrap">
       <div class="prose">
 
-        <p>TODO：開頭段落。</p>
+${originNote}        <p>TODO：開頭段落。</p>
 
         <h2>小標題</h2>
         <p>內文。</p>

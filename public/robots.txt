@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://linjay29.github.io/rensin-blog/sitemap.xml
+Sitemap: https://rensin-clinic.sclin.net/sitemap.xml

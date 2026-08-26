@@ -10,7 +10,8 @@
       · 檔案乾淨且在 git 裡   → 該檔最後一次 commit 的日期
       · 沒有 git             → 檔案的 mtime
    3. 重建首頁 <!-- POSTS:START --> ~ <!-- POSTS:END --> 之間的卡片，
-      依最後更新時間排序（最新的在前），並產生 sitemap.xml
+      依「發表日期」排序（最新的在前），並產生 sitemap.xml
+   4. 重建首頁 <!-- TAGS:START --> ~ <!-- TAGS:END --> 之間的分類篩選鈕
 
    卡片是「直接寫進 HTML」的靜態內容，不靠 JavaScript 讀 JSON 生成，
    搜尋引擎抓首頁時就看得到全部文章。
@@ -27,8 +28,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
 const INDEX = path.join(PUBLIC, "index.html");
 
-/* 正式站網址，只用來產生 sitemap.xml。換網域時改這裡。 */
-const SITE_URL = "https://linjay29.github.io/rensin-blog";
+/* 正式站網址，只用來產生 sitemap.xml。換網域時改這裡。
+   （另外還有兩個地方要一起改：public/robots.txt 的 Sitemap 行、
+     public/index.html 的 <link rel="canonical">） */
+const SITE_URL = "https://rensin-clinic.sclin.net";
 
 /* 文章資料夾命名規則：20260802-introduction */
 const SLUG_RE = /^\d{8}-[a-z0-9][a-z0-9-]*$/;
@@ -87,6 +90,37 @@ function lastChanged(absFile) {
   const d = fs.statSync(absFile).mtime;
   const p = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+/* og:url / og:image 一定要是絕對網址 -----------------------------------------
+   Facebook、LINE 抓分享預覽時不會自己補上網域，
+   寫成相對路徑（assets/cover.jpg）的話預覽圖就是空的。
+   這裡統一用 SITE_URL 補成絕對網址，順便把 og:url 也補上。 */
+function stampOpenGraph(html, slug) {
+  const base = `${SITE_URL}/${slug}/`;
+  let out = html;
+
+  // og:image：已經是 http(s) 就不動，相對路徑才補
+  out = out.replace(
+    /(<meta\s+property=["']og:image["']\s+content=["'])([^"']*)(["'])/i,
+    (all, open, val, close) =>
+      /^https?:\/\//i.test(val) ? all : `${open}${base}${val.replace(/^\.?\//, "")}${close}`
+  );
+
+  // og:url：有就更新，沒有就補在 og:image（或 og:locale）後面
+  if (/<meta\s+property=["']og:url["']/i.test(out)) {
+    out = out.replace(
+      /(<meta\s+property=["']og:url["']\s+content=["'])[^"']*(["'])/i,
+      `$1${base}$2`
+    );
+  } else {
+    out = out.replace(
+      /(<meta\s+property=["']og:(?:image|locale)["'][^>]*>)/i,
+      `$1\n<meta property="og:url" content="${base}">`
+    );
+  }
+
+  return out;
 }
 
 /* 把更新日期寫回文章 HTML -------------------------------------------------- */
@@ -154,16 +188,43 @@ function slugToDate(slug) {
 }
 
 function renderCard(p) {
-  return `        <a class="card" href="${p.slug}/">
+  /* 發表日期一定顯示；改過的文章才多顯示一行「更新」。
+     舊文搬家時這兩個日期會差很多，分開顯示才不會讓 2019 年的文章
+     看起來像今天寫的。 */
+  const dates =
+    p.updated === p.published
+      ? `<span>${p.published}</span>`
+      : `<span>${p.published}</span>\n            <span>更新 ${p.updated}</span>`;
+
+  return `        <a class="card" href="${p.slug}/" data-tag="${escapeHtml(p.tag)}">
           <span class="tag">${escapeHtml(p.tag)}</span>
           <h3>${escapeHtml(p.title)}</h3>
           <p>${escapeHtml(p.summary)}</p>
           <span class="card-foot">
             <span>${escapeHtml(p.author)}</span>
-            <span>更新 ${p.updated}</span>
+            ${dates}
             <span class="counter" data-counter-view="${escapeHtml(p.counter)}" hidden><b class="num">0</b> 次瀏覽</span>
           </span>
         </a>`;
+}
+
+/* 分類篩選鈕：依文章數量由多到少排，數量相同時照筆畫（localeCompare）*/
+function renderTagFilter(posts) {
+  const counts = new Map();
+  for (const p of posts) counts.set(p.tag, (counts.get(p.tag) || 0) + 1);
+
+  const tags = [...counts.entries()].sort(
+    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-Hant")
+  );
+
+  const buttons = [
+    `        <button type="button" class="chip is-on" data-filter="*">全部 <b>${posts.length}</b></button>`,
+    ...tags.map(
+      ([tag, n]) =>
+        `        <button type="button" class="chip" data-filter="${escapeHtml(tag)}">${escapeHtml(tag)} <b>${n}</b></button>`
+    )
+  ];
+  return buttons.join("\n");
 }
 
 function writeSitemap(posts, siteUpdated) {
@@ -189,7 +250,7 @@ function main() {
 
   /* 1) 把更新日期寫回每篇文章 */
   for (const p of posts) {
-    const next = stampUpdated(p.html, p.updated);
+    const next = stampOpenGraph(stampUpdated(p.html, p.updated), p.slug);
     if (next !== p.html) {
       fs.writeFileSync(p.file, next, "utf8");
       console.log(`  ✎ ${p.slug} → 更新日期 ${p.updated}`);
@@ -198,11 +259,16 @@ function main() {
     }
   }
 
-  /* 2) 排序：最後更新新的在前；同日則發表日新的在前 */
+  /* 2) 排序：發表日期新的在前
+     ------------------------------------------------------------------
+     ⚠️ 這裡刻意「不」用最後更新日期排序。
+     舊站文章搬過來時，每一篇的更新日期都會是搬家的那一天，
+     照更新日期排的話，首頁會變成一整排同一天、順序還是隨機的舊文。
+     照發表日期排，2019 年的文章就會乖乖待在 2026 年的文章後面。 */
   posts.sort(
     (a, b) =>
-      b.updated.localeCompare(a.updated) ||
       b.published.localeCompare(a.published) ||
+      b.updated.localeCompare(a.updated) ||
       b.slug.localeCompare(a.slug)
   );
 
@@ -220,16 +286,31 @@ function main() {
   const cards = posts.map(renderCard).join("\n");
   index = index.slice(0, s + START.length) + "\n" + cards + "\n" + index.slice(e);
 
-  /* 4) 首頁自己的最後更新時間 = 全站最新的那一篇 */
-  const siteUpdated = posts[0].updated;
+  /* 4) 重建分類篩選鈕（沒有這兩個標記就跳過，不擋建置） */
+  const T_START = "<!-- TAGS:START -->";
+  const T_END = "<!-- TAGS:END -->";
+  const ts = index.indexOf(T_START);
+  const te = index.indexOf(T_END);
+  if (ts !== -1 && te !== -1 && te > ts) {
+    const chips = renderTagFilter(posts);
+    index = index.slice(0, ts + T_START.length) + "\n" + chips + "\n" + index.slice(te);
+    console.log("→ 分類篩選鈕已重建");
+  }
+
+  /* 5) 首頁自己的最後更新時間 = 全站「最後被改動」的那一篇
+     （注意：不是 posts[0]，因為卡片是照發表日期排的） */
+  const siteUpdated = posts.reduce(
+    (max, p) => (p.updated > max ? p.updated : max),
+    posts[0].updated
+  );
   index = index.replace(
     /(<span\b[^>]*\bdata-site-updated\b[^>]*>)([\s\S]*?)(<\/span>)/i,
     `$1${siteUpdated}$3`
   );
 
   fs.writeFileSync(INDEX, index, "utf8");
-  console.log(`→ 首頁卡片已重建：${posts.length} 篇，最新在前`);
-  console.log(`  排序：${posts.map((p) => `${p.slug}(${p.updated})`).join(" › ")}`);
+  console.log(`→ 首頁卡片已重建：${posts.length} 篇，發表日新的在前`);
+  console.log(`  排序：${posts.map((p) => `${p.slug}(發表 ${p.published})`).join(" › ")}`);
 
   writeSitemap(posts, siteUpdated);
   console.log("→ sitemap.xml 已產生");
