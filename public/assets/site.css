@@ -76,10 +76,16 @@ a:hover{color:var(--brand-dark)}
   font-size:clamp(.98rem,3.4vw,1.08rem);letter-spacing:.01em;
   min-width:0;
 }
+/* 頁首 logo：診所自有標誌（透明底 PNG），等比例縮放不裁切 */
 .brand .mark{
-  flex:none;width:30px;height:30px;border-radius:9px;
-  background:linear-gradient(140deg,var(--brand),#1c7f8f);
-  display:grid;place-items:center;color:#fff;font-size:.85rem;font-weight:800;
+  flex:none;width:34px;height:34px;
+  object-fit:contain;
+}
+/* 品牌名中間的直槓：比兩側的字淡一階，才不會搶讀 */
+.brand .sep{
+  font-style:normal;font-weight:400;
+  color:var(--ink-dim);
+  margin:0 .45em;
 }
 .brand .name{min-width:0;overflow-wrap:anywhere}
 .nav{display:flex;gap:clamp(10px,3vw,20px);flex-wrap:wrap}
