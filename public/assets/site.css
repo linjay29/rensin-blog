@@ -508,3 +508,7 @@ a:hover{color:var(--brand-dark)}
   border-left:0;padding-left:0;   /* Hero 版不要左邊那條線 */
   max-width:38em;margin-inline:auto;
 }
+
+/* 區塊標題底下沒有 .sub 副標時，改由這條補回間距
+   （.section h2 只留 6px，是預期後面接副標；直接接內文會太擠） */
+.section h2 + .prose{margin-top:26px}
