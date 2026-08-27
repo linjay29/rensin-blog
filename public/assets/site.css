@@ -425,3 +425,59 @@ a:hover{color:var(--brand-dark)}
   font-size:.82rem;color:var(--ink-dim);
 }
 .hero--banner .meta:empty{display:none}
+
+/* ======================  醫師簡介：標語與技能  ========================= */
+/* 名片上那四個主治方向，做成一行標語 */
+.prose .tagline{
+  margin:0 0 .5em;
+  font-size:clamp(1.02rem,3.6vw,1.2rem);
+  font-weight:750;letter-spacing:.02em;
+  color:var(--brand-dark);
+  line-height:1.7;
+}
+.prose .tagline-sub{
+  margin:0 0 1.8em;
+  font-size:.94rem;line-height:1.85;
+  color:var(--ink-mid);
+  padding-left:14px;border-left:3px solid var(--brand-soft);
+}
+
+/* 職務表格裡的英文全名：另起一行、字小一級 */
+.table-scroll .en{
+  display:block;
+  margin-top:2px;
+  font-size:.76rem;line-height:1.5;
+  color:var(--ink-dim);
+}
+
+/* 小標後面掛的英文，換行時不會黏在一起 */
+.prose h3 .en-inline{
+  display:block;
+  margin-top:3px;
+  font-size:.76rem;font-weight:600;letter-spacing:.04em;
+  color:var(--ink-dim);
+}
+
+/* 主治／專長：左標籤右內容，手機上自動堆疊 */
+.prose .skills{
+  margin:0 0 1.8em;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px 16px;
+  align-items:start;
+}
+.prose .skills dt{
+  font-size:.78rem;font-weight:700;letter-spacing:.08em;
+  color:var(--brand);background:var(--brand-soft);
+  padding:4px 10px;border-radius:999px;
+  white-space:nowrap;
+}
+.prose .skills dd{
+  margin:0;
+  font-size:.94rem;line-height:1.9;
+  color:var(--ink-mid);
+}
+@media (max-width:520px){
+  .prose .skills{grid-template-columns:1fr;gap:4px 0}
+  .prose .skills dt{justify-self:start;margin-top:10px}
+}
