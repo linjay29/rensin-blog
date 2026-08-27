@@ -21,14 +21,15 @@ public/
     site.css                    全站樣式
     counter.js                  瀏覽計數器
     filter.js                   首頁分類篩選
-    hero-trail-running.jpg      首頁 HERO 照片（CC BY 2.0）
+    logo.png                    診所標誌（頁首）
+    clinic-card.jpg             診所名片（首頁 HERO）
+    doctor-portrait.jpg         醫師照片（簡介）
   20190621-whey-chest/
     index.html
     assets/                     ← 這一篇專用的圖，跟文章放在一起
       cover.jpg
   20260802-clinic-guide/index.html
   20260802-frozen-shoulder/index.html
-  20260802-trail-running/index.html
 
 tools/
   build.mjs                     更新日期 + 卡片索引 + 分類鈕 + sitemap
@@ -104,10 +105,11 @@ npm run new -- whey-chest "健身＋乳清＝豐胸？" "健身訓練" \
 
 ### 分類
 
-目前有文章的分類：`診所公告`、`骨科衛教`、`運動醫學`、`健身訓練`。
+目前有文章的分類：`診所公告`、`骨科衛教`、`健身訓練`。
 要加新的直接寫在 `post:tag` 裡，首頁的分類鈕會自動多一顆，卡片上的標籤也會照著顯示。
 
-> **`關於我` 目前沒有文章。** 原本那篇「開張了」已於 2026-08-26 移除。
+> **`關於我` 與 `運動醫學` 目前都沒有文章。**
+> 「開張了」於 2026-08-26 移除，「越野跑不受傷的三個準備」於 2026-08-28 移除。
 > 首頁與各文章頁尾的「關於我」連結改指向首頁的 `#about`「關於林士傑醫師」區塊，
 > 不是指向分類篩選——因為點進一個沒有文章的分類只會看到空畫面。
 > 日後若再寫一篇 `post:tag` 為 `關於我` 的文章，篩選鈕會自動長回來，
@@ -215,45 +217,37 @@ update public.page_counter set count = 0 where id like 'rensin-%';
 2. **github-pages** — 用 `actions/deploy-pages` 發布
 3. **cloudflare-pages** — 用 `wrangler-action` 發布到 Cloudflare Pages 專案 `rensin-blog`
 
-### 目前狀態（2026-08-26）
+### 目前狀態（2026-08-28）
 
-正式網址是 **<https://rensin-clinic.sclin.net>**，由 **Cloudflare Pages** 提供。
+正式網址 **<https://rensin-clinic.sclin.net>**，由 **Cloudflare Pages** 提供，已上線。
 
 | 項目 | 狀態 |
 |---|---|
-| Cloudflare Pages 專案 `rensin-blog` | ✅ 已建立並部署，<https://rensin-blog.pages.dev> 回應 200 |
-| custom domain `rensin-clinic.sclin.net` | ⚠️ 已加入專案，狀態 `initializing`（等 DNS） |
-| **DNS 紀錄 `rensin-clinic`** | ❌ **還沒建立——網域目前無法解析** |
-| GitHub Pages <https://linjay29.github.io/rensin-blog/> | ✅ 仍在運作，當備援 |
-| repo secrets（CF 自動部署用） | ❌ 尚未設定，workflow 的 cloudflare job 會被略過 |
+| Cloudflare Pages 專案 `rensin-blog` | ✅ 已建立並持續自動部署 |
+| custom domain `rensin-clinic.sclin.net` | ✅ active，憑證由 Cloudflare 簽發 |
+| DNS `rensin-clinic` CNAME → `rensin-blog.pages.dev` | ✅ 已建立（Proxied） |
+| repo secrets | ✅ `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` 已設定 |
+| GitHub Pages <https://linjay29.github.io/rensin-blog/> | ⚠️ 備援，目前部署失敗（見下方） |
 
-### 還差兩件事才會上線
+> **DNS 為什麼要手動加？** wrangler 的 OAuth 憑證只有 `zone:read`，
+> 且 Cloudflare 的 DNS API 直接拒絕 OAuth token（回 `code 10000`）。
+> 要用程式加，得另開一組帶 **Zone → DNS → Edit** 的 API Token。
 
-**1. 加一筆 DNS 紀錄**（Cloudflare 後台 → sclin.net → DNS → Add record）
+### ⚠️ GitHub Pages 目前卡住（2026-08-28）
 
-| 欄位 | 值 |
-|---|---|
-| Type | `CNAME` |
-| Name | `rensin-clinic` |
-| Target | `rensin-blog.pages.dev` |
-| Proxy status | 🟠 Proxied |
+某次連續推送後，一個 Pages deployment 卡在 GitHub 後端且不會結束，
+之後每次部署都撞上它：
 
-加完幾分鐘內 custom domain 的狀態就會從 `initializing` 變成 `active`，
-憑證由 Cloudflare 自動簽發，不必手動處理。
-
-> **為什麼不是用指令加？** wrangler 的 OAuth 憑證只有 `zone:read`，
-> 而且 Cloudflare 的 DNS API 直接拒絕 OAuth token（回 `code 10000 Authentication error`）。
-> 要用程式加，得另外開一組帶 **Zone → DNS → Edit** 的 API Token。
-
-**2. 設定 repo secrets，讓 push 之後自動部署到 Cloudflare**
-
-沒設的話，每次改完都要手動跑：
-
-```bash
-npx wrangler pages deploy public --project-name=rensin-blog --branch=main
+```
+Deployment request failed for <sha> due to in progress deployment.
+Please cancel <前一個 sha> first or wait for it to complete.
 ```
 
-設定方式見下面「Cloudflare 所需的 Repository secrets」。
+已試過打 API 取消（回報 `deployment_cancelled`）、開全新 run、重跑失敗 job，
+**三種都無效**。GitHub 自己的 API 還互相矛盾：deployments API 說 `failure`、
+Pages API 說 `cancelled`、deploy 動作說「進行中」。
+
+正式站（Cloudflare）不受影響。這是 GitHub 端的狀態不一致，只能等或回報。
 
 ### ⚠️ 兩個踩過的坑
 
@@ -340,11 +334,21 @@ GitHub Pages 也會自動採用同一個檔案，兩邊行為一致。
 
 ## 圖片授權
 
-HERO 照片：[《Trail Running Lago Orta》](https://www.flickr.com/photos/47332444@N03/5304116937)
-by Julia Baykova，取自 Flickr，採 [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) 授權。
-使用 Flickr 提供之 1024px 尺寸，未另行修改。出處標示於每一頁的 footer。
+目前站上的圖片**全部是自有素材**，沒有引用外部授權圖：
 
-要換圖或加新圖時，請沿用同樣格式在 footer 標明 **標題、作者、來源、授權**（CC BY 的四項要求）。
+| 檔案 | 用途 | 來源 |
+|---|---|---|
+| `assets/logo.png` | 頁首標誌 | 診所自有 |
+| `assets/clinic-card.jpg` | 首頁 HERO | 診所名片 |
+| `assets/doctor-portrait.jpg` | 簡介照片 | 醫師本人 |
+| `20190621-whey-chest/assets/cover.jpg` | 該篇標題圖 | 作者自製 |
+
+> 先前首頁與部分文章曾使用一張 Flickr 的 CC BY 2.0 越野跑照片，
+> 隨該篇文章於 2026-08-28 刪除後一併移除，相關標示也已清除。
+
+**日後若要用外部圖片**，必須在該頁 footer 標明 **標題、作者、來源、授權** 四項
+（CC BY 的要求），且只在實際顯示該圖的頁面標示——
+標在沒有用到那張圖的頁面上，等於標錯。
 
 ### 搬舊文時的圖片檢查
 
