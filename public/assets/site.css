@@ -481,3 +481,26 @@ a:hover{color:var(--brand-dark)}
   .prose .skills{grid-template-columns:1fr;gap:4px 0}
   .prose .skills dt{justify-self:start;margin-top:10px}
 }
+
+/* ======================  醫師簡介：照片與標語並排  ===================== */
+.bio-lead{
+  display:grid;
+  grid-template-columns:minmax(0,180px) 1fr;
+  gap:clamp(16px,4vw,28px);
+  align-items:center;
+  margin:0 0 1.8em;
+}
+.bio-lead .portrait{margin:0;min-width:0}
+.bio-lead .portrait img{
+  display:block;width:100%;height:auto;   /* 等比例，不裁切 */
+  /* 照片已在輸出時壓在 --bg 同色底上，所以不加邊框、不加圓角，
+     邊緣會直接融進頁面背景，看起來仍是去背的效果 */
+}
+.bio-lead .bio-lead-text > :last-child{margin-bottom:0}
+
+/* 窄螢幕改成上下堆疊，照片置中且不要佔滿整個寬度 */
+@media (max-width:560px){
+  .bio-lead{grid-template-columns:1fr;gap:12px;text-align:center}
+  .bio-lead .portrait{max-width:210px;margin-inline:auto}
+  .bio-lead .tagline-sub{text-align:left}
+}
