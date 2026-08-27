@@ -108,7 +108,11 @@ a:hover{color:var(--brand-dark)}
   /* 名片右半的湖綠實測為 #41bab1（整片同色）。直接整片鋪上去的話，
      白字對比只有 2.41:1，連 WCAG 大字的 3:1 都不到，年長讀者會看不清楚。
      所以以名片的湖綠起頭，往同色系深處漸層，文字落在對比足夠的區段。 */
-  background:linear-gradient(165deg,#4cc4bb 0%,var(--tiffany) 45%,#33a49b 100%);
+  /* 透明湖綠：疊在頁面底色上形成淡色調，不是實心色塊 */
+  background:linear-gradient(165deg,
+              rgba(76,196,187,.30) 0%,
+              rgba(65,186,177,.34) 45%,
+              rgba(51,164,155,.26) 100%);
   color:#052825;
   padding:clamp(38px,9vw,68px) 0 clamp(34px,8vw,56px);
 }
