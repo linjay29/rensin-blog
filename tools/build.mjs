@@ -20,6 +20,7 @@
    =========================================================================== */
 
 import { execFileSync } from "node:child_process";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -90,6 +91,47 @@ function lastChanged(absFile) {
   const d = fs.statSync(absFile).mtime;
   const p = (n) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+/* 靜態資源加版本號（cache busting）---------------------------------------
+   Cloudflare Pages 對 assets 送的是 Cache-Control: max-age=14400（4 小時）。
+   HTML 更新了但 site.css 的網址沒變，瀏覽器就會拿舊的 CSS 配新的 HTML，
+   結果是新加的 class 沒有樣式、被刪掉的舊規則還在生效 —— 畫面壞掉但重新
+   部署也修不好，只能叫人硬重新整理。
+
+   解法：把檔案內容的雜湊掛在網址後面。內容一改，網址就變，
+   舊的快取自然失效，新的一定拿得到。 */
+const ASSET_HASHES = new Map();
+
+function assetHash(relPath) {
+  if (ASSET_HASHES.has(relPath)) return ASSET_HASHES.get(relPath);
+  const file = path.join(PUBLIC, relPath);
+  let h = "";
+  if (fs.existsSync(file)) {
+    h = crypto.createHash("md5").update(fs.readFileSync(file)).digest("hex").slice(0, 8);
+  }
+  ASSET_HASHES.set(relPath, h);
+  return h;
+}
+
+/* 會加上版本號的檔案（相對於 public/）*/
+const VERSIONED = ["assets/site.css", "assets/counter.js", "assets/filter.js"];
+
+function stampAssetVersions(html) {
+  let out = html;
+  for (const rel of VERSIONED) {
+    const v = assetHash(rel);
+    if (!v) continue;
+    const name = rel.replace(/^assets\//, "");
+    // 比對 assets/x.css、../assets/x.css、/assets/x.css，
+    // 先吃掉舊的 ?v=xxxx 再重掛，重複執行不會越接越長
+    const re = new RegExp(
+      `((?:\\.\\./|/)?assets/${name.replace(/\./g, "\\.")})(\\?v=[0-9a-f]+)?`,
+      "g"
+    );
+    out = out.replace(re, `$1?v=${v}`);
+  }
+  return out;
 }
 
 /* og:url / og:image 一定要是絕對網址 -----------------------------------------
@@ -250,7 +292,9 @@ function main() {
 
   /* 1) 把更新日期寫回每篇文章 */
   for (const p of posts) {
-    const next = stampOpenGraph(stampUpdated(p.html, p.updated), p.slug);
+    const next = stampAssetVersions(
+      stampOpenGraph(stampUpdated(p.html, p.updated), p.slug)
+    );
     if (next !== p.html) {
       fs.writeFileSync(p.file, next, "utf8");
       console.log(`  ✎ ${p.slug} → 更新日期 ${p.updated}`);
@@ -308,9 +352,27 @@ function main() {
     `$1${siteUpdated}$3`
   );
 
+  index = stampAssetVersions(index);
   fs.writeFileSync(INDEX, index, "utf8");
   console.log(`→ 首頁卡片已重建：${posts.length} 篇，發表日新的在前`);
   console.log(`  排序：${posts.map((p) => `${p.slug}(發表 ${p.published})`).join(" › ")}`);
+
+  /* 6) 404.html 不是文章，但同樣載入 site.css，也要蓋版本號 */
+  const notFound = path.join(PUBLIC, "404.html");
+  if (fs.existsSync(notFound)) {
+    const before = fs.readFileSync(notFound, "utf8");
+    const after = stampAssetVersions(before);
+    if (after !== before) {
+      fs.writeFileSync(notFound, after, "utf8");
+      console.log("→ 404.html 資源版本號已更新");
+    }
+  }
+
+  console.log(
+    `→ 靜態資源版本：${VERSIONED.filter((r) => assetHash(r))
+      .map((r) => `${r.replace("assets/", "")}=${assetHash(r)}`)
+      .join("  ")}`
+  );
 
   writeSitemap(posts, siteUpdated);
   console.log("→ sitemap.xml 已產生");

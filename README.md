@@ -295,6 +295,28 @@ gh api -X POST repos/linjay29/rensin-blog/pages -f "build_type=workflow"
 - `public/robots.txt` 的 Sitemap 那一行
 - `public/index.html` 的 `<link rel="canonical">`
 
+### 靜態資源的版本號（改完樣式卻沒生效時看這裡）
+
+`site.css`、`counter.js`、`filter.js` 在 HTML 裡都帶一個 `?v=` 雜湊：
+
+```html
+<link rel="stylesheet" href="assets/site.css?v=a4fcdb65">
+```
+
+這串由 `build.mjs` 依**檔案內容**算出來，內容一改、網址就變。
+
+> **為什麼需要。** Cloudflare Pages 對 assets 送的是
+> `Cache-Control: public, max-age=14400`（4 小時）。
+> 網址不變的話，瀏覽器會在這 4 小時內直接用快取裡的舊 CSS，
+> 卻搭配剛部署的新 HTML —— 新加的 class 沒有樣式、被刪掉的舊規則還在生效。
+>
+> 實際踩過一次：頁首改版後，舊 CSS 讓 `.hero--banner` 失效退回深藍綠漸層、
+> `.brand .mark` 仍套用舊的漸層方塊，畫面上就是「Hero 變綠、logo 後面一塊綠」。
+> 重新部署也修不好，因為壞的是瀏覽器端的快取。
+
+`stampAssetVersions()` 會先吃掉舊的 `?v=` 再重掛，重複 build 不會越接越長。
+**新增其他共用的 css/js 時，記得加進 `build.mjs` 的 `VERSIONED` 陣列。**
+
 ### 為什麼要有 `public/404.html`
 
 **Cloudflare Pages 在沒有 404.html 時，會把首頁內容用 HTTP 200 回給任何不存在的網址。**
