@@ -34,29 +34,25 @@
 
 <main>
 
-  <!-- ===================== HERO ===================== -->
-  <section class="hero">
+  <!-- ===================== HERO =====================
+       頁首就是一張診所名片橫幅，沿用舊站 drjaylife.blogspot.com 的做法：
+       圖片本身就是招牌，不另外放大標題文字。
+       h1 仍然保留但視覺隱藏 —— 圖片裡的字搜尋引擎讀不到，
+       頁面沒有 h1 對 SEO 與螢幕閱讀器都是缺陷。
+  -->
+  <section class="hero hero--banner">
     <div class="wrap">
-      <p class="eyebrow">Dr. Lin Shih-Chieh · Orthopaedics</p>
-      <h1>骨科醫師的診間<br>與山徑</h1>
-      <p class="lede">
-        我是林士傑，屏東仁心骨科診所院長。這裡寫骨關節疼痛的衛教、超音波導引注射與肌能系貼紮的臨床心得、
-        肌力訓練與運動傷害預防，也記錄自己在越野跑道上的那些事。
-      </p>
+      <h1 class="visually-hidden">林士傑醫師｜屏東仁心骨科診所</h1>
+
+      <figure class="banner">
+        <img src="assets/clinic-card.jpg"
+             width="1357" height="816" loading="eager" decoding="async" fetchpriority="high"
+             alt="屏東仁心骨科診所名片：院長林士傑，地址屏東市自由路西段 118 號，電話 (08)751-9682。主治項目為筋骨痠痛、預防醫學、抗老修復、醫美減重。">
+      </figure>
+
       <p class="meta">
-        <span>骨科專科醫師</span>
-        <span>屏東市自由路西段 118 號</span>
         <span class="counter" data-counter-self="rensin-home" hidden>本站瀏覽 <b class="num">0</b></span>
       </p>
-
-      <figure class="hero-figure">
-        <img src="assets/hero-trail-running.jpg"
-             width="1023" height="687" loading="eager" decoding="async"
-             alt="數名跑者在滿是落葉與岩石的陡峭山徑上向上攀行。">
-        <figcaption>
-          在山徑上，身體的每一個關節都誠實地回報你平常的準備。
-        </figcaption>
-      </figure>
     </div>
   </section>
 
@@ -221,14 +217,12 @@
       </div>
     </div>
 
-    <!-- ============ 圖片出處（CC BY 標示）============ -->
+    <!-- ============ 圖片出處 ============
+         首頁主視覺已改為診所名片（自有素材），原本的 Flickr CC BY 照片
+         不再出現在本頁，因此這裡不再標示；該照片仍用於「越野跑」那篇，
+         標示保留在那一頁的頁尾。
+    -->
     <div class="credit">
-      <p>
-        主視覺照片：<a href="https://www.flickr.com/photos/47332444@N03/5304116937" rel="noopener">《Trail Running Lago Orta》</a>
-        by Julia Baykova，取自 Flickr，採
-        <a href="https://creativecommons.org/licenses/by/2.0/" rel="license noopener">CC BY 2.0</a>
-        授權。使用 Flickr 提供之 1024px 尺寸，未另行修改。
-      </p>
       <p>
         本站內容為一般健康資訊，<strong>不能取代醫師的診察、診斷或治療</strong>。
         身體不適請至醫療院所就診。

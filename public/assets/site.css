@@ -390,3 +390,31 @@ a:hover{color:var(--brand-dark)}
 }
 .filter-empty[hidden]{display:none}
 .card[hidden]{display:none}
+
+/* ======================  名片橫幅頁首  ================================== */
+/* 頁首改成一張診所名片圖（沿用舊站 drjaylife.blogspot.com 的做法）。
+   .hero 預設是深藍綠漸層，但名片本身左半是白底、右半是自己的湖綠，
+   疊在深色漸層上兩種綠會打架，所以這個修飾類把底色換成淺色。 */
+.hero--banner{
+  background:var(--surface);
+  color:var(--ink);
+  padding:clamp(20px,4vw,36px) 0 clamp(16px,3vw,26px);
+  border-bottom:1px solid var(--line);
+}
+.hero--banner .banner{
+  margin:0 auto;
+  width:100%;
+  max-width:var(--wrap);      /* 不會比內文欄寬更寬 */
+}
+.hero--banner .banner img{
+  display:block;width:100%;height:auto;   /* 等比例，不裁切、不變形 */
+  border-radius:var(--radius);
+  border:1px solid var(--line);
+  background:#fff;
+}
+.hero--banner .meta{
+  margin:14px 0 0;
+  display:flex;justify-content:center;
+  font-size:.82rem;color:var(--ink-dim);
+}
+.hero--banner .meta:empty{display:none}
