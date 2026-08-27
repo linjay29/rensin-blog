@@ -4,20 +4,28 @@
    =========================================================================== */
 
 :root{
-  --brand:#0e5c6b;          /* 深藍綠：主色 */
-  --brand-dark:#0a424e;
-  --brand-soft:#e6f2f4;
-  --accent:#c8873f;         /* 暖銅：點綴 */
-  --bg:#f6f8f9;
+  /* ── 色彩來源：診所名片右半的湖綠，實測 #41bab1 ──────────────────
+     亮湖綠在白底上只有 2.41:1，不能當文字或連結色，
+     所以文字用同色相的深階，亮色留給填底與點綴。 */
+  --tiffany:#41bab1;        /* 名片湖綠原色：填底、點綴 */
+  --tiffany-soft:rgba(65,186,177,.16);   /* 同色透明：標籤底 */
+
+  --brand:#12756e;          /* 主色（連結、標籤文字）白底 5.5:1 */
+  --brand-dark:#0b544f;     /* 深階（標題）白底 8.9:1 */
+  --brand-soft:#e3f5f3;     /* 淺階：callout 底、卡片標籤底 */
+
+  --accent:#c8873f;         /* 暖銅：警示用，刻意不跟品牌色同系，才有區辨作用 */
+
+  --bg:#f4f9f8;             /* ⚠️ 改這個要一併重新輸出 doctor-portrait.jpg */
   --surface:#ffffff;
-  --line:#dde5e8;
-  --ink:#1b2a2e;
-  --ink-mid:#4a5f66;
-  --ink-dim:#71858c;
+  --line:#d9e8e6;
+  --ink:#172b29;
+  --ink-mid:#456260;
+  --ink-dim:#6d8886;
   --radius:14px;
   --wrap:820px;             /* 內文欄寬：HERO 圖不得超過此寬度 */
   --wrap-wide:1080px;
-  --shadow:0 1px 2px rgba(15,50,60,.05), 0 8px 24px rgba(15,50,60,.06);
+  --shadow:0 1px 2px rgba(10,60,56,.05), 0 8px 24px rgba(10,60,56,.06);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -97,13 +105,16 @@ a:hover{color:var(--brand-dark)}
 
 /* =============================  HERO  ==================================== */
 .hero{
-  background:linear-gradient(175deg,#0e5c6b 0%,#0a424e 100%);
-  color:#eaf4f6;
+  /* 名片右半的湖綠實測為 #41bab1（整片同色）。直接整片鋪上去的話，
+     白字對比只有 2.41:1，連 WCAG 大字的 3:1 都不到，年長讀者會看不清楚。
+     所以以名片的湖綠起頭，往同色系深處漸層，文字落在對比足夠的區段。 */
+  background:linear-gradient(165deg,#4cc4bb 0%,var(--tiffany) 45%,#33a49b 100%);
+  color:#052825;
   padding:clamp(38px,9vw,68px) 0 clamp(34px,8vw,56px);
 }
 .hero .eyebrow{
   margin:0 0 14px;font-size:.74rem;font-weight:700;
-  letter-spacing:.2em;color:#8fc8d2;text-transform:uppercase;
+  letter-spacing:.2em;color:#0a4c46;text-transform:uppercase;
 }
 .hero h1{
   margin:0;
@@ -113,11 +124,11 @@ a:hover{color:var(--brand-dark)}
 .hero .lede{
   margin:18px 0 0;
   font-size:clamp(.98rem,3.2vw,1.1rem);
-  color:#c4dde3;max-width:36em;
+  color:#083b36;max-width:36em;
 }
 .hero .meta{
   margin:22px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px;
-  font-size:.85rem;color:#9dcbd4;
+  font-size:.85rem;color:#0a4c46;
 }
 .hero .meta span{display:inline-flex;align-items:center;gap:6px;min-width:0}
 
@@ -131,14 +142,14 @@ a:hover{color:var(--brand-dark)}
   display:block;width:100%;height:auto;   /* 等比例，不變形 */
   aspect-ratio:1023/687;object-fit:cover;
   border-radius:var(--radius);
-  border:1px solid rgba(255,255,255,.16);
-  background:#0a424e;
+  border:1px solid rgba(5,40,37,.18);
+  background:#0b544f;
 }
 .hero-figure figcaption{
   margin-top:10px;font-size:.76rem;line-height:1.6;
-  color:#8fb8c0;text-align:center;
+  color:#0a4c46;text-align:center;
 }
-.hero-figure figcaption a{color:#b9dbe2}
+.hero-figure figcaption a{color:#052825}
 
 /* ============================  區塊  ===================================== */
 .section{padding:clamp(40px,8vw,64px) 0}
@@ -164,7 +175,7 @@ a:hover{color:var(--brand-dark)}
   transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
 }
 .card:hover{
-  transform:translateY(-2px);border-color:#b9d3d9;
+  transform:translateY(-2px);border-color:#a9d8d3;
   box-shadow:0 2px 4px rgba(15,50,60,.06),0 14px 32px rgba(15,50,60,.1);
 }
 .card .tag{
@@ -206,7 +217,7 @@ a:hover{color:var(--brand-dark)}
 
 .callout{
   margin:1.8em 0;padding:clamp(16px,4vw,22px);
-  background:var(--brand-soft);border:1px solid #c5dfe4;
+  background:var(--brand-soft);border:1px solid #c2e5e1;
   border-left:4px solid var(--brand);
   border-radius:0 var(--radius) var(--radius) 0;
 }
@@ -276,24 +287,24 @@ a:hover{color:var(--brand-dark)}
 
 /* ============================  頁尾  ===================================== */
 .site-footer{
-  background:#0a2b33;color:#9fc0c7;
+  background:#0a3330;color:#9fc3bf;
   padding:clamp(34px,7vw,48px) 0 clamp(26px,6vw,34px);
   font-size:.86rem;line-height:1.8;
 }
 .site-footer h4{
-  margin:0 0 10px;color:#e3f1f3;font-size:.94rem;font-weight:700;
+  margin:0 0 10px;color:#e2f4f2;font-size:.94rem;font-weight:700;
 }
 .footer-grid{
   display:grid;gap:clamp(20px,5vw,32px);
   grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));
 }
-.site-footer a{color:#a8ced6}
+.site-footer a{color:#a5d9d4}
 .site-footer ul{margin:0;padding:0;list-style:none}
 .site-footer li{margin-bottom:5px;overflow-wrap:anywhere}
 .credit{
   margin-top:clamp(22px,5vw,30px);padding-top:18px;
   border-top:1px solid rgba(255,255,255,.12);
-  font-size:.78rem;color:#7fa5ad;
+  font-size:.78rem;color:#7fa8a4;
 }
 .credit p{margin:0 0 6px}
 
@@ -384,11 +395,11 @@ a:hover{color:var(--brand-dark)}
   font-variant-numeric:tabular-nums;font-weight:700;
   font-size:.74rem;color:var(--ink-dim);
 }
-.chip:hover{border-color:#b9d3d9;color:var(--brand)}
+.chip:hover{border-color:#a9d8d3;color:var(--brand)}
 .chip.is-on{
   background:var(--brand);border-color:var(--brand);color:#fff;
 }
-.chip.is-on b{color:#a8d6de}
+.chip.is-on b{color:#a9dcd7}
 .chip:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 
 .filter-empty{
@@ -454,7 +465,7 @@ a:hover{color:var(--brand-dark)}
 }
 .prose .skills dt{
   font-size:.78rem;font-weight:700;letter-spacing:.08em;
-  color:var(--brand);background:var(--brand-soft);
+  color:var(--brand-dark);background:var(--tiffany-soft);
   padding:4px 10px;border-radius:999px;
   white-space:nowrap;
 }
