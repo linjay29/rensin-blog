@@ -428,27 +428,20 @@ a:hover{color:var(--brand-dark)}
 
 /* ======================  醫師簡介：標語與技能  ========================= */
 /* 名片上那四個主治方向，做成一行標語 */
-.prose .tagline{
+.tagline{
   margin:0 0 .5em;
   font-size:clamp(1.02rem,3.6vw,1.2rem);
   font-weight:750;letter-spacing:.02em;
   color:var(--brand-dark);
   line-height:1.7;
 }
-.prose .tagline-sub{
+.tagline-sub{
   margin:0 0 1.8em;
   font-size:.94rem;line-height:1.85;
   color:var(--ink-mid);
   padding-left:14px;border-left:3px solid var(--brand-soft);
 }
 
-/* 職務表格裡的英文全名：另起一行、字小一級 */
-.table-scroll .en{
-  display:block;
-  margin-top:2px;
-  font-size:.76rem;line-height:1.5;
-  color:var(--ink-dim);
-}
 
 /* 小標後面掛的英文，換行時不會黏在一起 */
 .prose h3 .en-inline{
@@ -502,5 +495,16 @@ a:hover{color:var(--brand-dark)}
 @media (max-width:560px){
   .bio-lead{grid-template-columns:1fr;gap:12px;text-align:center}
   .bio-lead .portrait{max-width:210px;margin-inline:auto}
-  .bio-lead .tagline-sub{text-align:left}
+}
+
+/* Hero 裡的標語：置中，並與名片拉開距離 */
+.hero--banner .tagline{
+  margin:clamp(18px,4vw,26px) 0 .5em;
+  text-align:center;
+}
+.hero--banner .tagline-sub{
+  margin:0;
+  text-align:center;
+  border-left:0;padding-left:0;   /* Hero 版不要左邊那條線 */
+  max-width:38em;margin-inline:auto;
 }
