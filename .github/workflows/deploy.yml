@@ -10,9 +10,25 @@ permissions:
   pages: write
   id-token: write
 
+# ⚠️ cancel-in-progress 必須是 false。
+#
+# 它取消得掉的只有 GitHub Actions 這邊的 workflow run，
+# 取消不掉 GitHub 伺服器端已經開始的 Pages deployment。
+# 連續推兩個 commit 時，前一個 run 被砍掉，但它建立的 Pages deployment
+# 仍留在 in progress，接著後面每一次部署都會撞上：
+#
+#   Deployment request failed for <sha> due to in progress deployment.
+#   Please cancel <前一個 sha> first or wait for it to complete.
+#
+# 而且那個部署會一直卡著，不會自己結束，等於整個 Pages 就此鎖死
+# （2026-08-27 實際踩過，最後是打 API 手動取消才解開：
+#    gh api -X POST repos/OWNER/REPO/pages/deployments/<sha>/cancel）
+#
+# 改成 false 之後，同時間的 run 會排隊而不是互砍，部署依序完成。
+# 代價是連續推送時後一次要等前一次跑完，對這種規模的站台無所謂。
 concurrency:
-  group: deploy
-  cancel-in-progress: true
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   # 先跑建置腳本：重算每篇的最後更新日期、重建首頁卡片與 sitemap，
@@ -27,7 +43,7 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/build.mjs
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5   # v4 仍跑在已棄用的 Node 20 上
         with:
           name: site
           path: public
@@ -52,6 +68,11 @@ jobs:
           path: public
       - id: deployment
         uses: actions/deploy-pages@v4
+      # ⚠️ 這個 job 失敗時，不要用「Re-run failed jobs」。
+      # 重跑會在同一個 run 裡再上傳一份同名的 github-pages artifact，
+      # 接著 deploy-pages 會因為找到兩份而失敗：
+      #   Multiple artifacts named "github-pages" ... Artifact count is 2.
+      # 正確做法是開一個全新的 run：gh workflow run Deploy --ref main
 
   cloudflare-pages:
     needs: build

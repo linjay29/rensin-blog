@@ -414,9 +414,10 @@ a:hover{color:var(--brand-dark)}
 }
 .hero--banner .banner img{
   display:block;width:100%;height:auto;   /* 等比例，不裁切、不變形 */
-  border-radius:var(--radius);
-  border:1px solid var(--line);
   background:#fff;
+  /* 不要加 border-radius：名片圖自己四邊就畫了一圈細框，
+     圓角會把那四個直角連同框線一起切掉。
+     也不要另外加 border，否則會和圖內既有的框疊成兩層。 */
 }
 .hero--banner .meta{
   margin:14px 0 0;
