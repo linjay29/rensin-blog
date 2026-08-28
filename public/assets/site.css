@@ -39,8 +39,12 @@ body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,
-              BlinkMacSystemFont,"Segoe UI",sans-serif;
+  /* 微軟正黑體優先。它只存在於 Windows，非 Windows 的訪客
+     （手機佔多數）會依序落到各平台對應的中文字型；
+     後備清單不能拿掉，否則會掉到通用 sans，中文渲染很差。 */
+  font-family:"Microsoft JhengHei","微軟正黑體",
+              "PingFang TC","Noto Sans TC","Heiti TC",
+              -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   font-size:17px;
   line-height:1.85;
   -webkit-font-smoothing:antialiased;
