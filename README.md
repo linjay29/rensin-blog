@@ -171,6 +171,46 @@ GitHub Actions 每次部署前都會再跑一次（用 `fetch-depth: 0` 取完�
 所以搬過來的舊文會顯示成 `2019-06-21` + `更新 2026-08-26`，
 讀者一眼看得出這是舊文重新整理過，而不是今天新寫的。
 
+## 中文斷行檢查（build 會擋）
+
+`build.mjs` 最後一步會掃所有 HTML，發現**句中斷行**就中止建置。
+
+> **為什麼要擋。** 中文沒有詞間空格，但 HTML 會把原始碼的換行摺成一個半形空格。
+> 斷行只要落在句中（特別是 `<strong>`、`<a>` 前後），畫面上就會多一道空隙：
+>
+> ```html
+> …骨科門診，並任
+> <strong>微美時尚診所</strong>…
+> ```
+>
+> 顯示成「並任 微美時尚診所」。2026-08-28 全站一次抓出 32 處，全是這個成因。
+
+### 規則
+
+| 位置 | 可否斷行 |
+|---|---|
+| 句末標點後（`。` `！` `？` `；`） | ✅ 可以。全形句號本身已帶尾隙，看不出來，一句一行最好讀 |
+| 句中標點後（`、` `，` `：` `）` `」`） | ❌ 不行，空隙會露出來 |
+| 沒有標點的句中 | ❌ 絕對不行，最明顯 |
+
+**長清單（如主治項目）整條寫成一行**，不要為了原始碼寬度而斷。
+
+### 偵測是怎麼做的
+
+不能只做純文字比對——把標籤剝光之後，相鄰的 `<li>`、`<td>` 看起來也像句中斷行。
+（初版用純文字掃出 98 處，真正有問題的只有 7 處。）
+
+實際作法：
+
+1. 移除註解與 `<script>`／`<style>`
+2. 區塊標籤與 `<br>` 換成哨兵字元，當作硬邊界
+3. **標籤與標籤之間的純空白直接抹掉**——那多半是 flex／grid 容器裡的並列項目
+   （`.nav` 的連結、`.card-foot`、`.post-meta`），瀏覽器會丟棄項目間的空白
+4. 剝掉行內標籤，依邊界切段，每段各自摺疊空白
+5. 只在同一段行內文字流裡找「全形字 + 半形空格 + 全形字」
+
+`span` 也列為邊界，因為本站的 span 不是 flex 項目就是獨立標籤，不會和前後文字連成一段。
+
 ## 首頁卡片為什麼寫死在 HTML
 
 SEO。Google 雖然會執行 JavaScript，但那是在第二波「渲染佇列」才做的，
@@ -227,27 +267,36 @@ update public.page_counter set count = 0 where id like 'rensin-%';
 | custom domain `rensin-clinic.sclin.net` | ✅ active，憑證由 Cloudflare 簽發 |
 | DNS `rensin-clinic` CNAME → `rensin-blog.pages.dev` | ✅ 已建立（Proxied） |
 | repo secrets | ✅ `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` 已設定 |
-| GitHub Pages <https://linjay29.github.io/rensin-blog/> | ⚠️ 備援，目前部署失敗（見下方） |
+| GitHub Pages <https://linjay29.github.io/rensin-blog/> | ✅ 備援，正常部署 |
 
 > **DNS 為什麼要手動加？** wrangler 的 OAuth 憑證只有 `zone:read`，
 > 且 Cloudflare 的 DNS API 直接拒絕 OAuth token（回 `code 10000`）。
 > 要用程式加，得另開一組帶 **Zone → DNS → Edit** 的 API Token。
 
-### ⚠️ GitHub Pages 目前卡住（2026-08-28）
+### 踩過：GitHub Pages 被卡死的部署擋住（2026-08-28，已解除）
 
-某次連續推送後，一個 Pages deployment 卡在 GitHub 後端且不會結束，
-之後每次部署都撞上它：
+連續推送之後，一個 Pages deployment 卡在 GitHub 後端且不會結束，
+接下來每次部署都撞上它：
 
 ```
 Deployment request failed for <sha> due to in progress deployment.
 Please cancel <前一個 sha> first or wait for it to complete.
 ```
 
-已試過打 API 取消（回報 `deployment_cancelled`）、開全新 run、重跑失敗 job，
-**三種都無效**。GitHub 自己的 API 還互相矛盾：deployments API 說 `failure`、
-Pages API 說 `cancelled`、deploy 動作說「進行中」。
+**試過三種處置全部無效**：打 API 取消（回報 `deployment_cancelled` 但沒解除）、
+開全新 run、重跑失敗的 job。GitHub 自己的 API 當時還互相矛盾——
+deployments API 說 `failure`、Pages API 說 `cancelled`、deploy 動作說「進行中」。
 
-正式站（Cloudflare）不受影響。這是 GitHub 端的狀態不一致，只能等或回報。
+**最後是等它自己過期解除的**，約一小時多，跟任何處置都無關。
+
+兩個後續：
+
+- `concurrency` 的 `cancel-in-progress` 已改為 `false`（見 deploy.yml 的註解）。
+  它取消得掉 workflow run，卻取消不掉伺服器端已開始的 Pages deployment，
+  正是這次卡死的成因。改成排隊就不會再撞。
+- **這個 job 失敗時不要用「Re-run failed jobs」**，重跑會在同一個 run 裡
+  再上傳一份同名 artifact，導致 `Multiple artifacts named "github-pages"`。
+  要開全新的 run：`gh workflow run Deploy --ref main`。
 
 ### ⚠️ 兩個踩過的坑
 

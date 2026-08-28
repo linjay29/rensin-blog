@@ -93,6 +93,110 @@ function lastChanged(absFile) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
+/* 中文句中斷行檢查 ---------------------------------------------------------
+   中文沒有詞間空格，但 HTML 會把原始碼的換行摺成一個半形空格。
+   只要斷行落在句中（尤其 <strong>、<a> 前後），畫面上就會多出可見的空隙，
+   例如「並任 微美時尚診所」「檢測、 高層次超音波…」。
+
+   偵測要點：不能只做純文字比對。把標籤剝光之後，相鄰的 <li>、<td>
+   看起來也像句中斷行，但它們是不同區塊，實際不會產生空格
+   （2026-08-28 用純文字掃出 98 處，真正有問題的只有 7 處）。
+
+   作法：把「區塊級標籤」與 <br> 換成硬邊界，剝掉行內標籤後依邊界切段，
+   每段各自摺疊空白，只在同一段行內文字流裡找「全形字 + 半形空格 + 全形字」。
+   =========================================================================== */
+
+/* 全形字：CJK 標點（不含 U+3000 全形空格，那是刻意用在標語上的）、
+   中日韓文字、全形英數符號 */
+const FULLWIDTH = "\\u3001-\\u303F\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uFF01-\\uFF65";
+
+/* 句末標點之後允許斷行：。！？；
+   全形句號本身已帶尾隙，後面多一個半形空格看不出來，
+   而每句一行是可讀性最好的寫法，不必為此把整段擠成一行。
+   句中、頓號（、）、逗號（，）、括號後的空格則會露出來，一律視為錯誤。 */
+const SENTENCE_END = "\\u3002\\uFF01\\uFF1F\\uFF1B";
+const BAD_SPACE = new RegExp(`[${FULLWIDTH}] [${FULLWIDTH}]`);
+const ALLOWED = new RegExp(`[${SENTENCE_END}] `);
+
+/* 這些標籤兩側視為硬邊界，跨越它們的空白不會顯示成句中空格。
+   span 也列入：本站的 span 不是 flex 項目（.card-foot、.post-meta —— flex
+   項目之間的空白會被瀏覽器丟棄），就是獨立標籤（.callout .label），
+   都不會和前後文字連成同一段。 */
+const BLOCK_TAGS =
+  "html|head|body|div|p|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|td|th|" +
+  "h1|h2|h3|h4|h5|h6|section|article|header|footer|nav|main|aside|figure|" +
+  "figcaption|blockquote|pre|hr|form|caption|option|br|script|style|span";
+
+/* 邊界哨兵。不能用空格，否則會和內文本身的空白混在一起分不出來。 */
+const SEP = String.fromCharCode(0);
+
+function findCjkSpacing(html) {
+  let s = html;
+
+  s = s.replace(/<!--[\s\S]*?-->/g, "");                    // 註解不產生空白
+  s = s.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, "");    // 程式碼不是內文
+
+  // 區塊標籤與 <br> → 硬邊界
+  s = s.replace(new RegExp(`</?(?:${BLOCK_TAGS})\\b[^>]*>`, "gi"), SEP);
+
+  // 標籤與標籤之間的純空白 → 直接抹掉，不算句中空格。
+  // 這種位置多半是 flex／grid 容器裡的並列項目（.nav 的連結、
+  // .card-foot 與 .post-meta 的欄位），瀏覽器會丟棄項目間的空白。
+  // 真正會顯示出來的，是「文字」旁邊的換行，那才是要抓的。
+  s = s.replace(/>\s+</g, "><");
+
+  s = s.replace(/<[^>]+>/g, "");                             // 其餘為行內標籤，直接剝掉
+
+  const hits = [];
+  const scan = new RegExp(`[${FULLWIDTH}] [${FULLWIDTH}]`, "g");
+
+  for (const seg of s.split(SEP)) {
+    const text = seg.replace(/\s+/g, " ").trim();            // 摺疊空白，同瀏覽器
+    if (!text || !BAD_SPACE.test(text)) continue;
+
+    scan.lastIndex = 0;
+    let m;
+    while ((m = scan.exec(text)) !== null) {
+      if (ALLOWED.test(m[0])) continue;                      // 句末標點後可斷行
+      const from = Math.max(0, m.index - 12);
+      hits.push(text.slice(from, m.index + m[0].length + 12));
+      scan.lastIndex = m.index + 1;                          // 允許相鄰的重疊比對
+    }
+  }
+  return hits;
+}
+
+function checkCjkSpacing() {
+  const files = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith(".html")) files.push(p);
+    }
+  })(PUBLIC);
+
+  let total = 0;
+  for (const file of files.sort()) {
+    const hits = findCjkSpacing(fs.readFileSync(file, "utf8"));
+    if (!hits.length) continue;
+    if (!total) console.error("\n✗ 發現中文句中斷行（畫面上會多出空格）：");
+    console.error(`  ${path.relative(ROOT, file).split(path.sep).join("/")}`);
+    for (const h of hits) console.error(`     …${h}…`);
+    total += hits.length;
+  }
+
+  if (total) {
+    console.error(
+      `\n共 ${total} 處。原始碼的換行會被瀏覽器摺成一個半形空格，` +
+        `\n中文沒有詞間空格，斷在句中就會露出來。` +
+        `\n修法：把斷點移到標點之後，或整句（整條清單）不要斷行。\n`
+    );
+    process.exit(1);
+  }
+  console.log(`→ 中文斷行檢查：${files.length} 個頁面，無問題`);
+}
+
 /* 靜態資源加版本號（cache busting）---------------------------------------
    Cloudflare Pages 對 assets 送的是 Cache-Control: max-age=14400（4 小時）。
    HTML 更新了但 site.css 的網址沒變，瀏覽器就會拿舊的 CSS 配新的 HTML，
@@ -376,6 +480,10 @@ function main() {
 
   writeSitemap(posts, siteUpdated);
   console.log("→ sitemap.xml 已產生");
+
+  /* 7) 最後才檢查，此時 HTML 已是實際要部署的內容 */
+  checkCjkSpacing();
+
   console.log("完成。");
 }
 
