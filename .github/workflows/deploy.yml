@@ -43,6 +43,18 @@ jobs:
         with:
           node-version: '22'
       - run: node tools/build.mjs
+
+      # 草稿不上線。deploy 是把整個 public/ 上傳，
+      # 所以 _draft- 開頭的資料夾雖然首頁沒有連結，網址打對還是開得起來。
+      # 在打包前把它們從「要部署的那一份」刪掉；本機的 public/ 不受影響。
+      - name: 移除草稿，不讓它們部署出去
+        run: |
+          shopt -s nullglob
+          for d in public/_draft-*/; do
+            echo "  排除草稿：$d"
+            rm -rf "$d"
+          done
+        shell: bash
       - uses: actions/upload-artifact@v5   # v4 仍跑在已棄用的 Node 20 上
         with:
           name: site

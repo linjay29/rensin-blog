@@ -129,6 +129,39 @@ npm run new -- whey-chest "健身＋乳清＝豐胸？" "健身訓練" \
 - 點分類鈕會把網址同步成 `?tag=骨科衛教#posts`，可以直接分享或加書籤。
 - 網址帶了不存在的分類會自動退回「全部」，不會出現空白頁。
 
+## 草稿
+
+**資料夾名稱前面加 `_draft-`，那篇就是草稿。**
+
+```
+public/_draft-20260831-shoulder-instability/    ← 草稿
+public/20260901-calcific-tendonitis/            ← 已上線
+```
+
+`build.mjs` 只認得 `YYYYMMDD-slug` 這個格式，所以草稿：
+
+- 不會出現在首頁卡片
+- 不會進 sitemap
+- 不會被算進分類鈕的篇數
+
+**要發布就把 `_draft-` 拿掉**，重跑 `npm run build`，首頁就會多一張卡片。
+反過來要下架，就把前綴加回去。
+
+### 草稿不會被部署（2026-09-03 補上）
+
+先前的做法有個漏洞：deploy 是把**整個 `public/`** 上傳，
+所以草稿雖然首頁沒有連結，網址打對還是開得起來——
+
+```
+rensin-clinic.sclin.net/_draft-20260831-shoulder-instability/
+```
+
+而 `robots.txt` 是 `Allow: /`，等於沒有攔阻。沒定稿的內容被讀者或同業
+看到都不理想，所以 `deploy.yml` 在 build 之後、上傳之前多了一步，
+把 `public/_draft-*/` 從那份要部署的副本刪掉。
+
+**本機的 `public/` 不受影響**，草稿照樣寫、照樣用 `npm run dev` 預覽。
+
 ## 更新日期是怎麼算的
 
 `build.mjs` 對每篇文章依序判斷：
