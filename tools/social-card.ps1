@@ -94,5 +94,18 @@ if ($by -gt $logoY - 40) {
 }
 
 $bmp.Save((Join-Path (Get-Location) $Out), [System.Drawing.Imaging.ImageFormat]::Png)
+
+# 順便輸出限時動態版（1080×1920）：方形圖置中，上下留白。
+# 上緣 420px 與下緣 420px 是 IG 介面的安全區，連結貼紙就放下面那塊，
+# 所以這裡不放任何字，留給貼紙。
+$storyPath = [System.IO.Path]::ChangeExtension($Out, $null).TrimEnd('.') + "-story.png"
+$sb = New-Object System.Drawing.Bitmap(1080, 1920)
+$sg = [System.Drawing.Graphics]::FromImage($sb)
+$sg.InterpolationMode = 'HighQualityBicubic'
+$sg.Clear([System.Drawing.Color]::FromArgb(255, 242, 240, 237))
+$sg.DrawImage($bmp, 0, 420, 1080, 1080)
+$sb.Save((Join-Path (Get-Location) $storyPath), [System.Drawing.Imaging.ImageFormat]::Png)
+$sg.Dispose(); $sb.Dispose()
+Write-Output ("已輸出 " + $storyPath)
 $g.Dispose(); $bmp.Dispose(); $img.Dispose(); $lg.Dispose()
 Write-Output ("已輸出 " + $Out)
