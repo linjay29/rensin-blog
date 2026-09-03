@@ -177,10 +177,24 @@ a:hover{color:var(--brand-dark)}
 .card{
   display:flex;flex-direction:column;
   background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--radius);padding:clamp(18px,4.5vw,24px);
+  border-radius:var(--radius);overflow:hidden;
   text-decoration:none;color:inherit;
   box-shadow:var(--shadow);
   transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+/* 封面圖：有配圖的文章才有這一塊，沒有的卡片就從 .card-body 開始，
+   兩種混在同一排也不會歪——高度差只在圖片本身。 */
+.card-cover{
+  display:block;aspect-ratio:3/2;
+  background:var(--brand-soft);border-bottom:1px solid var(--line);
+}
+.card-cover img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+}
+.card-body{
+  display:flex;flex-direction:column;flex:1;
+  padding:clamp(18px,4.5vw,24px);
 }
 .card:hover{
   transform:translateY(-2px);border-color:#a9d8d3;

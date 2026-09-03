@@ -324,10 +324,21 @@ function collectPosts() {
         author: readMeta(html, "post:author") || "林士傑醫師",
         published: readMeta(html, "post:published") || slugToDate(slug),
         counter: readMeta(html, "post:counter") || `rensin-${slug}`,
+        cover: findCover(slug),
         updated: lastChanged(file)
       };
     })
     .filter(Boolean);
+}
+
+/* 卡片封面：約定俗成放在 <slug>/assets/cover.（jpg|png|webp）。
+   找不到就回傳 null，卡片維持純文字版面——舊文沒有配圖也不會破版。 */
+function findCover(slug) {
+  for (const ext of ["jpg", "jpeg", "png", "webp"]) {
+    const rel = `${slug}/assets/cover.${ext}`;
+    if (fs.existsSync(path.join(PUBLIC, rel))) return rel;
+  }
+  return null;
 }
 
 function slugToDate(slug) {
@@ -342,16 +353,23 @@ function renderCard(p) {
   const dates =
     p.updated === p.published
       ? `<span>${p.published}</span>`
-      : `<span>${p.published}</span>\n            <span>更新 ${p.updated}</span>`;
+      : `<span>${p.published}</span>\n              <span>更新 ${p.updated}</span>`;
 
-  return `        <a class="card" href="${p.slug}/" data-tag="${escapeHtml(p.tag)}">
-          <span class="tag">${escapeHtml(p.tag)}</span>
-          <h3>${escapeHtml(p.title)}</h3>
-          <p>${escapeHtml(p.summary)}</p>
-          <span class="card-foot">
-            <span>${escapeHtml(p.author)}</span>
-            ${dates}
-            <span class="counter" data-counter-view="${escapeHtml(p.counter)}" hidden><b class="num">0</b> 次瀏覽</span>
+  /* 有封面就放圖。alt 留空：標題就在圖的正下方，讀螢幕的人不需要聽兩次。 */
+  const cover = p.cover
+    ? `\n          <span class="card-cover"><img src="${p.cover}" alt="" loading="lazy" decoding="async"></span>`
+    : "";
+
+  return `        <a class="card" href="${p.slug}/" data-tag="${escapeHtml(p.tag)}">${cover}
+          <span class="card-body">
+            <span class="tag">${escapeHtml(p.tag)}</span>
+            <h3>${escapeHtml(p.title)}</h3>
+            <p>${escapeHtml(p.summary)}</p>
+            <span class="card-foot">
+              <span>${escapeHtml(p.author)}</span>
+              ${dates}
+              <span class="counter" data-counter-view="${escapeHtml(p.counter)}" hidden><b class="num">0</b> 次瀏覽</span>
+            </span>
           </span>
         </a>`;
 }
