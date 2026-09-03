@@ -6,10 +6,10 @@
      node tools/new-post.mjs <slug> "文章標題" ["分類"] [--date=YYYY-MM-DD] [--origin=網址]
 
    例（新文章，用今天的日期）：
-     node tools/new-post.mjs knee-arthritis "退化性膝關節炎的三個階段" "骨科衛教"
+     node tools/new-post.mjs knee-arthritis "退化性膝關節炎的三個階段" "骨科仁心"
 
    例（從舊站搬文章，用原始發表日期）：
-     node tools/new-post.mjs whey-chest "健身＋乳清＝豐胸？" "健身訓練" \
+     node tools/new-post.mjs whey-chest "健身＋乳清＝豐胸？" "骨科仁心" \
        --date=2019-06-21 --origin=https://drjaylife.blogspot.com/2019/06/blog-post_21.html
 
    會建立 public/<日期>-<slug>/index.html（例如 20190621-whey-chest/），
@@ -36,13 +36,13 @@ const flags = Object.fromEntries(
       return i === -1 ? [a.slice(2), true] : [a.slice(2, i), a.slice(i + 1)];
     })
 );
-const [rawSlug, title, tag = "骨科衛教"] = argv.filter((a) => !a.startsWith("--"));
+const [rawSlug, title, tag = "骨科仁心"] = argv.filter((a) => !a.startsWith("--"));
 
 if (!rawSlug || !title) {
   console.error(`用法： node tools/new-post.mjs <slug> "文章標題" ["分類"] [--date=YYYY-MM-DD] [--origin=網址]
 
   slug     只能用小寫英文、數字與連字號，例如 knee-arthritis
-  分類     預設「骨科衛教」，其他常用：診所公告、運動醫學、關於我、健身訓練
+  分類     預設「骨科仁心」，其他常用：診所公告、運動醫學、關於我、骨科仁心
   --date   發表日期，不給就用今天。搬舊文請務必指定原始發表日期。
   --origin 舊站原文網址，給了就會在文章開頭自動加一行出處註記。`);
   process.exit(1);
