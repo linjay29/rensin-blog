@@ -151,7 +151,9 @@ function findCjkSpacing(html) {
   const scan = new RegExp(`[${FULLWIDTH}] [${FULLWIDTH}]`, "g");
 
   for (const seg of s.split(SEP)) {
-    const text = seg.replace(/\s+/g, " ").trim();            // 摺疊空白，同瀏覽器
+    // 摺疊空白，同瀏覽器：只摺半形空白。全形空格（U+3000）在
+    // white-space:normal 下不會被瀏覽器摺疊，是刻意留在標題上的間距。
+    const text = seg.replace(/[ \t\r\n\f\v]+/g, " ").trim();
     if (!text || !BAD_SPACE.test(text)) continue;
 
     scan.lastIndex = 0;

@@ -3,3 +3,6 @@ node_modules/
 .DS_Store
 Thumbs.db
 *.log
+
+# 原始素材（Gemini 生成的無字原圖、社群成品），不進版控也不部署
+assets-src/
