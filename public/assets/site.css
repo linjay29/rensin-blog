@@ -230,6 +230,12 @@ a:hover{color:var(--brand-dark)}
   margin:1.8em 0 .5em;font-size:clamp(1.05rem,3.8vw,1.18rem);
   font-weight:700;line-height:1.55;color:var(--brand-dark);
 }
+/* 收費表的「總計」欄：照診所公告圖的做法用紅字，
+   因為那是病人真正要掏出來的數字，其餘欄位都是拆解。
+   #c0392b 在白底 5.0:1，過 WCAG AA。 */
+.prose .fee-total{color:#c0392b;font-weight:700}
+.prose th small{display:block;font-weight:600;font-size:.78em;color:var(--ink-dim)}
+
 /* h4 只用在表格上方當標籤（門診／復健），刻意做小，不搶 h3 */
 .prose h4{
   margin:1.5em 0 .4em;font-size:.95rem;
