@@ -550,3 +550,12 @@ a:hover{color:var(--brand-dark)}
 /* 區塊標題底下沒有 .sub 副標時，改由這條補回間距
    （.section h2 只留 6px，是預期後面接副標；直接接內文會太擠） */
 .section h2 + .prose{margin-top:26px}
+
+/* 首頁「最新公告」：這是全站最需要一眼看到的資訊，字要比一般表格大 ------ */
+.notice-heading{
+  margin:0 0 .6em;font-size:1.15rem;letter-spacing:.02em;
+}
+.notice-table th,.notice-table td{
+  font-size:1rem;padding:14px 16px;
+}
+.notice-table td strong{color:var(--accent)}
