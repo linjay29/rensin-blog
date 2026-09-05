@@ -37,6 +37,9 @@ const SITE_URL = "https://rensin-clinic.sclin.net";
 /* 文章資料夾命名規則：20260802-introduction */
 const SLUG_RE = /^\d{8}-[a-z0-9][a-z0-9-]*$/;
 
+/* 不是文章、但要收進 sitemap 的固定頁面（資料夾名） */
+const EXTRA_PAGES = [];
+
 /* ------------------------------------------------------------------ 小工具 */
 
 const todayISO = () => {
@@ -393,10 +396,12 @@ function renderTagFilter(posts) {
   return buttons.join("\n");
 }
 
+
 function writeSitemap(posts, siteUpdated) {
   const urls = [
     { loc: `${SITE_URL}/`, lastmod: siteUpdated },
-    ...posts.map((p) => ({ loc: `${SITE_URL}/${p.slug}/`, lastmod: p.updated }))
+    ...posts.map((p) => ({ loc: `${SITE_URL}/${p.slug}/`, lastmod: p.updated })),
+    ...EXTRA_PAGES.map((slug) => ({ loc: `${SITE_URL}/${slug}/`, lastmod: siteUpdated }))
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
