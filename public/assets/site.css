@@ -287,6 +287,10 @@ a:hover{color:var(--brand-dark)}
   white-space:nowrap;color:var(--ink-dim);font-weight:600;width:1%;
 }
 .table-scroll--kv td:last-child{text-align:left}
+/* 表頭要跟著資料列走，否則上下對不齊 */
+.table-scroll--kv th:first-child{text-align:left}
+.table-scroll--kv th:last-child{text-align:left}
+.table-scroll--kv td:first-child{text-align:left}
 
 /* --wide：欄位多、真的塞不下的比較表，才在自己的容器內橫向捲動 */
 .table-scroll--wide table{min-width:520px}
