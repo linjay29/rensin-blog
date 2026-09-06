@@ -567,7 +567,7 @@ a:hover{color:var(--brand-dark)}
   color:var(--ink-mid);
 }
 .hero-line{
-  margin:0 0 .3em;
+  margin:0 0 clamp(18px,3vw,28px);
   font-size:clamp(1.7rem,5.2vw,2.6rem);
   line-height:1.25;letter-spacing:.06em;
   color:var(--brand-dark);
