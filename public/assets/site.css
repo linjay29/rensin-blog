@@ -599,3 +599,24 @@ a:hover{color:var(--brand-dark)}
   margin:0;
   font-size:.9rem;line-height:1.75;color:var(--ink-mid);
 }
+
+/* 長文的頁內章節跳轉 ---------------------------------------------------- */
+.toc{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin:0 0 1.6em;padding:14px 16px;
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--brand-soft);
+}
+.toc a{
+  display:inline-block;
+  padding:5px 12px;
+  font-size:.84rem;line-height:1.5;letter-spacing:.02em;
+  color:var(--brand-dark);text-decoration:none;
+  background:var(--surface);
+  border:1px solid var(--line);border-radius:999px;
+}
+.toc a:hover,.toc a:focus-visible{
+  background:var(--brand);color:#fff;border-color:var(--brand);
+}
+/* 點進來的標題不要被固定頁首蓋住 */
+.prose h2{scroll-margin-top:16px}
