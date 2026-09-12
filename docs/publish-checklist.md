@@ -13,7 +13,25 @@ IG 貼文與 IG 限動這三個入口，而三個入口要的文案與圖檔規�
 - [ ] **定稿**：草稿在 `public/_draft-<slug>/`，定稿後把資料夾改名成 `public/<slug>/`
       （`_draft-` 開頭的資料夾 build 不收，deploy 也會在打包前刪掉，網址打對也開不了）
 - [ ] **封面圖**：`public/<slug>/assets/cover.jpg`
-      首頁卡片會自動抓這個路徑，不用另外設定；沒有這張圖就是純文字卡
+      首頁卡片會自動抓這個路徑，不用另外設定；沒有這張圖就是純文字卡。
+      **一律用 `tools/cover-card.ps1` 產生，不要用社群圖的流程做封面**——
+      那支腳本會一次疊上標題、湖綠短線與**右下角的診所 logo**，logo 是每張封面的固定元素：
+
+      ```bash
+      powershell -NoProfile -ExecutionPolicy Bypass -File tools/cover-card.ps1 -Src assets-src/<slug>/cover-src.jpg -Text assets-src/<slug>/cover-title.txt -Out public/<slug>/assets/cover.jpg -X 760 -Y 230 -Size 86
+      ```
+
+      - `cover-title.txt`（UTF-8，一行一列，通常兩行）就是壓在圖上的標題，**文字要跟文章標題一致**
+      - `-X/-Y/-Size` 每張圖都要看著調：主體在右就把字放左邊，反之亦然。**調完一定把圖叫出來看一次**
+      - `-Logo br`（預設）右下、`-Logo bl` 左下；主體壓到角落時才換邊
+      - 要把字寫進插畫裡的招牌或顯示燈，用 `tools/cover-sign.ps1`（支援旋轉角度與顏色，
+        例如 `-Text 重要資訊 -Angle 12 -Color "#EB6B89"`，粉紅取自 logo）
+      - **換過封面就要更新 `<img src="assets/cover.jpg?v=…">` 的版本號**（首頁卡片由 build 自動加）；
+        圖片的 CDN 快取是四小時，不加版本號會看到舊圖
+
+- [ ] ⚠️ **封面與社群圖是兩套流程，不可混用**：封面 `cover-card.ps1`（帶 logo、1200 寬）、
+      社群圖 `social-card.ps1`（方形 2048 與限動 1080×1920，見 B 段）。
+      2026-09-13 曾因為拿社群圖當封面，導致〈手指也會長石頭？〉少了 logo
 - [ ] **內文圖**：其餘配圖放同一個 `assets/`，在 HTML 裡用相對路徑引用
 - [ ] **build 通過**
 
