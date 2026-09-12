@@ -684,8 +684,7 @@ a:hover{color:var(--brand-dark)}
 .hero-portrait{margin:0;min-width:0}
 .hero-portrait img{
   display:block;width:100%;height:auto;
-  border-radius:14px;
-  background:#fff;
+  object-fit:contain;
 }
 
 /* 窄螢幕：照片在上、文字在下，照片只取上半身 */
@@ -693,7 +692,7 @@ a:hover{color:var(--brand-dark)}
   .hero-grid{grid-template-columns:1fr}
   .hero-portrait{order:-1}
   .hero-portrait img{
-    aspect-ratio:4/3;object-fit:cover;object-position:50% 18%;
+    max-width:240px;margin-inline:auto;
   }
   .hero--portrait .hero-actions{justify-content:flex-start}
 }
