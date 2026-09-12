@@ -631,3 +631,33 @@ a:hover{color:var(--brand-dark)}
   font-size:.88rem;line-height:1.85;
   color:var(--ink-mid);
 }
+
+/* ======================  Hero：logo 版  ========================= */
+.hero-logo{
+  display:block;
+  width:clamp(96px,18vw,140px);height:auto;
+  margin:0 auto clamp(10px,2vw,16px);
+}
+.hero--banner .hero-eyebrow{text-align:center}
+.hero--banner .hero-line{text-align:center}
+.hero-actions{
+  margin:clamp(18px,4vw,26px) 0 0;
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+}
+.btn{
+  display:inline-flex;align-items:center;
+  padding:10px 18px;border-radius:999px;
+  background:var(--brand);color:#fff;
+  font-size:.94rem;font-weight:600;text-decoration:none;
+  border:1px solid var(--brand);
+}
+.btn:hover{filter:brightness(1.08)}
+.btn--ghost{
+  background:transparent;color:var(--ink);
+  border-color:var(--line);
+}
+.btn--ghost:hover{background:var(--surface-2,rgba(0,0,0,.03));filter:none}
+.hero-note{
+  margin:14px 0 0;text-align:center;
+  font-size:.86rem;color:var(--ink-dim);
+}
