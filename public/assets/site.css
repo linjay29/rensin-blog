@@ -714,7 +714,7 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
 
 /* 診療特色卡片的線條圖示（自己畫的內嵌 SVG，無授權問題） */
 .domain-card .ico{
-  display:block;width:26px;height:26px;
+  display:block;width:32px;height:32px;
   margin:0 0 10px;color:var(--brand-dark);
   padding:9px;box-sizing:content-box;
   background:var(--brand-soft);border-radius:999px;
