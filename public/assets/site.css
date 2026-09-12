@@ -696,3 +696,8 @@ a:hover{color:var(--brand-dark)}
   }
   .hero--portrait .hero-actions{justify-content:flex-start}
 }
+
+.hero-actions{align-items:center}
+.hero-addr{
+  font-size:.92rem;color:var(--ink-mid);
+}
