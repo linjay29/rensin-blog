@@ -701,10 +701,11 @@ a:hover{color:var(--brand-dark)}
 .hero-addr{
   display:inline-flex;align-items:center;
   padding:10px 18px;border-radius:999px;
-  border:1px solid var(--line);
-  font-size:.92rem;color:var(--ink);text-decoration:none;
+  background:var(--brand-soft);
+  border:1px solid var(--brand-soft);
+  font-size:.92rem;color:var(--brand-dark);text-decoration:none;font-weight:600;
 }
-a.hero-addr:hover{background:var(--surface-2,rgba(0,0,0,.03))}
+a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
 
 /* 設備卡內容長短不一時，不要被同列拉高 */
 .domain-grid{align-items:start}
