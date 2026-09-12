@@ -711,3 +711,17 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
 .domain-grid{align-items:start}
 .domain-card ul{margin:.6em 0 0;padding-left:1.15em}
 .domain-card li{margin:.3em 0}
+
+/* 診療特色卡片的線條圖示（自己畫的內嵌 SVG，無授權問題） */
+.domain-card .ico{
+  display:block;width:30px;height:30px;
+  margin:0 0 10px;color:var(--brand);
+}
+
+/* 核心信條：安全、精準、有效 */
+.creed{
+  margin:0 0 1.4em;
+  font-size:clamp(1.25rem,3.4vw,1.6rem);
+  font-weight:700;letter-spacing:.08em;
+  color:var(--brand-dark);
+}
