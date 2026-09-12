@@ -624,3 +624,10 @@ a:hover{color:var(--brand-dark)}
 }
 /* 點進來的標題不要被固定頁首蓋住 */
 .prose h2{scroll-margin-top:16px}
+
+/* 本院特色頁下方的一般性說明 */
+.fineprint{
+  margin-top:1.6em;
+  font-size:.88rem;line-height:1.85;
+  color:var(--ink-mid);
+}

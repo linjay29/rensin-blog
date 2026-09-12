@@ -2,18 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rensin-clinic.sclin.net/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://rensin-clinic.sclin.net/20260901-calcific-tendonitis/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://rensin-clinic.sclin.net/20260903-fall-tailbone/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://rensin-clinic.sclin.net/20260802-clinic-guide/</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://rensin-clinic.sclin.net/doctor/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://rensin-clinic.sclin.net/clinic-features/</loc>
+    <lastmod>2026-09-12</lastmod>
   </url>
 </urlset>
