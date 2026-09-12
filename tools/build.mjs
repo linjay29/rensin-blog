@@ -38,7 +38,7 @@ const SITE_URL = "https://rensin-clinic.sclin.net";
 const SLUG_RE = /^\d{8}-[a-z0-9][a-z0-9-]*$/;
 
 /* 不是文章、但要收進 sitemap 的固定頁面（資料夾名） */
-const EXTRA_PAGES = ["doctor", "clinic-features"];
+const EXTRA_PAGES = ["doctor"];
 
 /* ------------------------------------------------------------------ 小工具 */
 
