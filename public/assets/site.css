@@ -705,3 +705,8 @@ a:hover{color:var(--brand-dark)}
   font-size:.92rem;color:var(--ink);text-decoration:none;
 }
 a.hero-addr:hover{background:var(--surface-2,rgba(0,0,0,.03))}
+
+/* 設備卡內容長短不一時，不要被同列拉高 */
+.domain-grid{align-items:start}
+.domain-card ul{margin:.6em 0 0;padding-left:1.15em}
+.domain-card li{margin:.3em 0}
