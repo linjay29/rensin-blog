@@ -360,7 +360,7 @@ function renderCard(p) {
 
   /* 有封面就放圖。alt 留空：標題就在圖的正下方，讀螢幕的人不需要聽兩次。 */
   const cover = p.cover
-    ? `\n          <span class="card-cover"><img src="${p.cover}" alt="" loading="lazy" decoding="async"></span>`
+    ? `\n          <span class="card-cover"><img src="${p.cover}?v=${assetHash(p.cover)}" alt="" loading="lazy" decoding="async"></span>`
     : "";
 
   return `        <a class="card" href="${p.slug}/" data-tag="${escapeHtml(p.tag)}">${cover}
