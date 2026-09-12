@@ -27,7 +27,7 @@
     </a>
     <nav class="nav" aria-label="主選單">
       <a href="#notice">最新公告</a>
-      <a href="doctor/">醫師介紹</a>
+      <a href="#about">診所介紹</a>
       <a href="#posts">文章</a>
       <a href="#neighbors">診所芳鄰</a>
     </nav>
@@ -104,10 +104,45 @@
     </div>
   </section>
 
-  <section class="section" id="services">
+  <!-- ===================== 診所介紹 ===================== -->
+  <section class="section" id="about">
     <div class="wrap">
+      <h2>診所介紹</h2>
       <div class="prose">
-        <h2>治療項目</h2>
+
+        <h3>醫師介紹</h3>
+
+        <div class="bio-lead">
+          <figure class="portrait">
+            <img src="assets/doctor-portrait.jpg"
+                 width="700" height="897" loading="eager" decoding="async"
+                 alt="林士傑醫師身著白袍、雙臂交疊的半身照，白袍上繡有「林士傑醫師 Shih Chieh Lin, M.D.」。">
+          </figure>
+
+          <div class="bio-lead-text">
+            <p>
+              骨科專科醫師，現任<strong>仁心骨科診所院長</strong>，同時支援<strong>恆春基督教醫院</strong>骨科門診，並在<strong>微美時尚診所</strong>與<strong>微醫未來美學診所</strong>擔任特約醫美醫師。
+            </p>
+          </div>
+        </div>
+
+        <h4>資格認證</h4>
+
+        <ul>
+          <li>中華民國骨科專科醫師</li>
+          <li>台灣肌能系貼紮師</li>
+        </ul>
+
+        <h4>會員組織</h4>
+
+        <ul>
+          <li>中華民國骨科醫學會</li>
+          <li>台灣疼痛學會</li>
+          <li>台灣微整形美容醫學會</li>
+          <li>台灣基因營養功能醫學學會</li>
+        </ul>
+
+        <h3>治療項目</h3>
 
         <div class="domain-grid">
           <div class="domain-card">
@@ -136,7 +171,7 @@
           </div>
         </div>
 
-        <h2>診療特色</h2>
+        <h3>診療特色</h3>
 
         <p class="creed">安全　·　精準　·　有效</p>
 
@@ -174,6 +209,22 @@
             <p>依個人狀況調配的靜脈營養補充，由醫師評估後使用。</p>
           </div>
         </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 文章列表 =====================
+       ⚠️ 以下卡片由 tools/build.mjs 自動產生，請勿手動編輯。
+          新增或修改文章後執行：npm run build
+  -->
+
+  <section class="section" id="posts">
+    <div class="wrap wrap-wide">
+      <h2>文章</h2>
+      <p class="sub">依發表日期排序，最新的在前。點分類可以只看某一類。</p>
+
+      <div class="chips" role="group" aria-label="文章分類篩選">
 <!-- TAGS:START -->
         <button type="button" class="chip is-on" data-filter="*">全部 <b>3</b></button>
         <button type="button" class="chip" data-filter="骨科仁心">骨科仁心 <b>2</b></button>
@@ -271,7 +322,7 @@
       <div>
         <h4>文章分類</h4>
         <ul>
-          <li><a href="doctor/">醫師介紹</a></li>
+          <li><a href="#about">診所介紹</a></li>
           <li><a href="./?tag=%E8%A8%BA%E6%89%80%E5%85%AC%E5%91%8A#posts">診所公告</a></li>
           <li><a href="./?tag=%E9%AA%A8%E7%A7%91%E4%BB%81%E5%BF%83#posts">骨科仁心</a></li>
         </ul>
