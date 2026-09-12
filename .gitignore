@@ -4,5 +4,9 @@ node_modules/
 Thumbs.db
 *.log
 
+# 社群發文用的權杖（Meta API），只放本機，絕不進版控
+.env
+.env.*
+
 # 原始素材（Gemini 生成的無字原圖、社群成品），不進版控也不部署
 assets-src/
