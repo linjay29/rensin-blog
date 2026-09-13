@@ -719,3 +719,25 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   font-weight:700;letter-spacing:.08em;
   color:var(--brand-dark);
 }
+
+/* 最新公告裡的〈就診原則〉——整塊可點，做得比一行連結顯眼 */
+.notice-link{
+  display:block;margin-top:26px;padding:18px 20px;
+  background:var(--brand-soft);border:1px solid var(--line);
+  border-left:4px solid var(--brand);border-radius:12px;
+  text-decoration:none;color:inherit;
+}
+.notice-link:hover{border-color:var(--brand);background:#d6efec}
+.notice-link-title{
+  display:block;font-weight:700;font-size:1.15rem;
+  letter-spacing:.02em;color:var(--brand-dark);
+}
+.notice-link-desc{
+  display:block;margin-top:6px;color:var(--ink-mid);
+  font-size:.94rem;line-height:1.75;
+}
+.notice-link-cta{
+  display:block;margin-top:10px;font-weight:600;
+  font-size:.94rem;color:var(--brand);
+}
+.notice-link:hover .notice-link-cta{color:var(--brand-dark)}
