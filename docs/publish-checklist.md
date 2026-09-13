@@ -58,6 +58,10 @@ IG 貼文與 IG 限動這三個入口，而三個入口要的文案與圖檔規�
 - [ ] **無字原圖**：Gemini 生成時一律要求 `No text, no lettering, no numbers`，
       中文一律由我們自己合成（AI 畫的中文字必壞）。原圖收進
       `assets-src/<slug>/cover-src.jpg`（`assets-src/` 不進版控、不部署）
+- [ ] **圖裡有護理師時，臉型要像高淑麗**——她是傑哥的太太，也是跟診的護理師。
+      參考照放在 `assets-src/staff/`，生圖時一併餵給 Gemini；不要用隨機長相。
+      白袍是立領白色、胸前繡紫色「護理師 高淑麗」。仍標「圖為示意圖」。
+
 - [ ] **重點文字檔**：`assets-src/<slug>/social-card.txt`，UTF-8，一行一項
 
       ```
