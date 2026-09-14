@@ -785,3 +785,15 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   margin:.9em 0 0;font-size:1.12rem;font-weight:700;
   line-height:1.7;color:var(--brand-dark);letter-spacing:.02em;
 }
+
+/* 門診與復健時間表：八欄（時段＋七天），手機上一定塞不下，
+   給最小寬度讓它在自己的框裡橫捲，而不是把每一格壓成一字一行。 */
+.prose .week-table{min-width:520px}
+.prose .week-table th,
+.prose .week-table td{white-space:nowrap}
+.prose .week-table th:first-child,
+.prose .week-table td:first-child{text-align:left;font-variant-numeric:tabular-nums}
+@media (max-width:480px){
+  .prose .week-table th,
+  .prose .week-table td{padding-left:8px;padding-right:8px;font-size:.84rem}
+}
