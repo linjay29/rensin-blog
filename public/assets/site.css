@@ -770,3 +770,12 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   .prose .fee-table td{padding-left:8px;padding-right:8px}
   .prose .fee-table td:first-child{min-width:8em;font-size:.95em}
 }
+
+/* 診斷書的種類與收費：手機上四欄會被壓成一字一行（「一般／用」「200／元／份」），
+   所以給表格最小寬度讓它在自己的框裡橫捲，只有「內容」那欄換行。 */
+.prose .dx-table{min-width:480px}
+.prose .dx-table th,
+.prose .dx-table td{white-space:nowrap;vertical-align:middle}
+.prose .dx-table th:nth-child(3),
+.prose .dx-table td:nth-child(3){white-space:normal;text-align:left;min-width:15em}
+.prose .dx-table td:last-child{font-variant-numeric:tabular-nums}
