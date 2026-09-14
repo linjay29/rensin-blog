@@ -230,6 +230,12 @@ a:hover{color:var(--brand-dark)}
   margin:1.8em 0 .5em;font-size:clamp(1.05rem,3.8vw,1.18rem);
   font-weight:700;line-height:1.55;color:var(--brand-dark);
 }
+/* h3 前面掛一個品牌色的小方塊，跟 h2 的左側粗邊做出層級差 */
+.prose h3::before{
+  content:"";display:inline-block;
+  width:.5em;height:.5em;margin-right:.45em;
+  vertical-align:.08em;background:var(--brand);border-radius:2px;
+}
 /* 收費表的「總計」欄：照診所公告圖的做法用紅字，
    因為那是病人真正要掏出來的數字，其餘欄位都是拆解。
    #c0392b 在白底 5.0:1，過 WCAG AA。 */
