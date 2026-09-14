@@ -779,3 +779,9 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
 .prose .dx-table th:nth-child(3),
 .prose .dx-table td:nth-child(3){white-space:normal;text-align:left;min-width:15em}
 .prose .dx-table td:last-child{font-variant-numeric:tabular-nums}
+
+/* 文末的一句定勝負：比內文大一級、湖綠深階，單獨站一行 */
+.prose .one-line{
+  margin:.9em 0 0;font-size:1.12rem;font-weight:700;
+  line-height:1.7;color:var(--brand-dark);letter-spacing:.02em;
+}
