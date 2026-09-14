@@ -754,3 +754,19 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   border-left:6px solid var(--accent);
   padding-left:12px;
 }
+
+/* 掛號費表：數字欄不准斷行（手機上 200 會被拆成 20 跟 0），
+   數字靠右、等寬對齊；只有第一欄的身分文字可以換行。 */
+.prose .fee-table th,
+.prose .fee-table td{vertical-align:middle}
+.prose .fee-table th:not(:first-child),
+.prose .fee-table td:not(:first-child){
+  white-space:nowrap;text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.prose .fee-table td:first-child{white-space:normal;min-width:9.5em}
+@media (max-width:480px){
+  .prose .fee-table th,
+  .prose .fee-table td{padding-left:8px;padding-right:8px}
+  .prose .fee-table td:first-child{min-width:8em;font-size:.95em}
+}
