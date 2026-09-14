@@ -741,3 +741,10 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   font-size:.94rem;color:var(--brand);
 }
 .notice-link:hover .notice-link-cta{color:var(--brand-dark)}
+
+/* 就診原則的〈以下情形，無法看診〉——用警示的暖銅色把標題拉出來 */
+.prose h2.h2-warn{
+  color:var(--accent);
+  border-left:6px solid var(--accent);
+  padding-left:12px;
+}
