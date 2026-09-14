@@ -788,7 +788,7 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
 
 /* 門診與復健時間表：八欄（時段＋七天），手機上一定塞不下，
    給最小寬度讓它在自己的框裡橫捲，而不是把每一格壓成一字一行。 */
-.prose .week-table{min-width:520px}
+.prose .week-table{min-width:0}
 .prose .week-table th,
 .prose .week-table td{white-space:nowrap}
 .prose .week-table th:first-child,
