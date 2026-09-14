@@ -3,9 +3,11 @@
   "configurations": [
     {
       "name": "rensin-blog",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "serve", "public", "-l", "4173"],
-      "port": 4173
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.mjs"
+      ],
+      "port": 4321
     }
   ]
 }
