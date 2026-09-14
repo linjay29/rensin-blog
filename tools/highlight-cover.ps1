@@ -1,5 +1,8 @@
 # IG 精選封面（1080×1920，限動尺寸）
 #
+# 定案配色（2026-09-14 傑哥選的）：蒂芙尼綠底 #81D8D0 ＋ 品牌深綠字 #0b544f，字級 200。
+# 淺底深字在白色的 IG 介面上辨識度最好，圓圈縮小也看得清楚。
+#
 # IG 的精選封面是從限動畫面裁一個圓出來，預設取中央，
 # 所以字要放在正中央，四周留白，縮成小圓才不會被切到。
 #
@@ -12,8 +15,9 @@
 param(
   [Parameter(Mandatory = $true)][string]$Text,
   [Parameter(Mandatory = $true)][string]$Out,
-  [string]$Bg = '0b544f',
-  [int]$Size = 150
+  [string]$Bg = '81D8D0',
+  [string]$Fg = '0b544f',
+  [int]$Size = 200
 )
 
 Add-Type -AssemblyName System.Drawing
@@ -31,7 +35,7 @@ $bgc = [System.Drawing.ColorTranslator]::FromHtml("#$Bg")
 $g.Clear($bgc)
 
 $font  = New-Object System.Drawing.Font("Microsoft JhengHei", $Size, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-$brush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::White)
+$brush = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslator]::FromHtml("#$Fg"))
 $teal  = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 65, 186, 177))
 $fmt   = New-Object System.Drawing.StringFormat
 $fmt.Alignment = [System.Drawing.StringAlignment]::Center
