@@ -26,6 +26,12 @@
 
   /* 這個站真的有的分類，用來擋掉網址亂帶的 ?tag= */
   const known = new Set(chips.map((c) => c.dataset.filter));
+  /* 導覽列的系列頁簽也算數：某個系列還沒有文章時，chips 不會有它，
+     但點進來要看到「這個分類還沒有文章」，而不是默默顯示全部。 */
+  for (const a of document.querySelectorAll('.nav a[href*="?tag="]')) {
+    const t = new URL(a.href, location.href).searchParams.get("tag");
+    if (t) known.add(t);
+  }
 
   function apply(tag, { push } = { push: false }) {
     const wanted = known.has(tag) ? tag : ALL;
