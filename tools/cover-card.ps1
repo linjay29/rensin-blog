@@ -31,7 +31,7 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("GenSenRounded JP R", "GenSenRounded JP R")
+$__want = @("GenSenRounded JP R")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
