@@ -59,9 +59,9 @@ $mid  = [System.Drawing.Color]::FromArgb(255, 69, 98, 96)    # 次要文字
 $teal = [System.Drawing.Color]::FromArgb(255, 65, 186, 177)  # 名片湖綠，只當點綴
 
 $fmt    = [System.Drawing.StringFormat]::GenericTypographic
-$fTitle = New-Object System.Drawing.Font("Microsoft JhengHei", 148, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-$fBul   = New-Object System.Drawing.Font("Microsoft JhengHei", 62, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
-$fSign  = New-Object System.Drawing.Font("Microsoft JhengHei", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fTitle = New-Object System.Drawing.Font("GenSenRounded JP B", 148, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fBul   = New-Object System.Drawing.Font("GenSenRounded JP M", 62, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fSign  = New-Object System.Drawing.Font("GenSenRounded JP M", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $brInk  = New-Object System.Drawing.SolidBrush ($ink)
 $brMid  = New-Object System.Drawing.SolidBrush ($mid)
 $brTeal = New-Object System.Drawing.SolidBrush ($teal)

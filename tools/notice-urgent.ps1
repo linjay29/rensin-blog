@@ -45,22 +45,22 @@ function Draw-Center($text, $font, $brush, $yy, $bold) {
 }
 
 # 種類（紅字）
-$fKind = New-Object System.Drawing.Font("Microsoft JhengHei", 62, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$fKind = New-Object System.Drawing.Font("GenSenRounded JP B", 62, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $y = 150
 $y += (Draw-Center $kind $fKind $bRed $y $true) + 46
 
 # 日期（超大，自動縮到塞得下）
 $dSize = 92
-$fDate = New-Object System.Drawing.Font("Microsoft JhengHei", $dSize, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$fDate = New-Object System.Drawing.Font("GenSenRounded JP B", $dSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 while ($g.MeasureString($date, $fDate).Width -gt ($CW - 160) -and $dSize -gt 40) {
   $dSize -= 4
   $fDate.Dispose()
-  $fDate = New-Object System.Drawing.Font("Microsoft JhengHei", $dSize, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+  $fDate = New-Object System.Drawing.Font("GenSenRounded JP B", $dSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 }
 $y += (Draw-Center $date $fDate $bInk $y $true) + 30
 
 # 主訊息（紅底白字色塊）
-$fBig = New-Object System.Drawing.Font("Microsoft JhengHei", 78, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$fBig = New-Object System.Drawing.Font("GenSenRounded JP B", 78, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $bs = $g.MeasureString($big, $fBig)
 $boxW = $bs.Width + 120
 $boxH = $bs.Height + 40
@@ -69,7 +69,7 @@ $g.DrawString($big, $fBig, (New-Object System.Drawing.SolidBrush($white)), (($CW
 $y += $boxH + 48
 
 # 說明
-$fNote = New-Object System.Drawing.Font("Microsoft JhengHei", 34, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fNote = New-Object System.Drawing.Font("GenSenRounded JP M", 34, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 Draw-Center $note $fNote $bBran $y $false | Out-Null
 
 # logo 與標語
@@ -81,7 +81,7 @@ if (Test-Path $logoPath) {
   $g.DrawImage($logo, 96, ($CH - $lh - 80), $lw, $lh)
   $logo.Dispose()
 }
-$fFoot = New-Object System.Drawing.Font("Microsoft JhengHei", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fFoot = New-Object System.Drawing.Font("GenSenRounded JP M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $fsz = $g.MeasureString($foot, $fFoot)
 $g.DrawString($foot, $fFoot, $bBran, ($CW - $fsz.Width - 100), ($CH - $fsz.Height - 100))
 

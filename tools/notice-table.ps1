@@ -40,9 +40,9 @@ $bInk   = New-Object System.Drawing.SolidBrush($ink)
 $bBran  = New-Object System.Drawing.SolidBrush($brand)
 $bSoft  = New-Object System.Drawing.SolidBrush($soft)
 
-$fTitle = New-Object System.Drawing.Font("Microsoft JhengHei", 58, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-$fHead  = New-Object System.Drawing.Font("Microsoft JhengHei", 34, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-$fFoot  = New-Object System.Drawing.Font("Microsoft JhengHei", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fTitle = New-Object System.Drawing.Font("GenSenRounded JP B", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fHead  = New-Object System.Drawing.Font("GenSenRounded JP B", 34, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fFoot  = New-Object System.Drawing.Font("GenSenRounded JP M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 
 # 標題（紅字置中，仿粗）
 $ts = $g.MeasureString($title, $fTitle)
@@ -63,7 +63,7 @@ $cellSize = 34
 function Get-Plain($t) { return ($t -replace '</?r>', '') }
 $fitted = $false
 while (-not $fitted -and $cellSize -gt 20) {
-  $fCell = New-Object System.Drawing.Font("Microsoft JhengHei", $cellSize, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+  $fCell = New-Object System.Drawing.Font("GenSenRounded JP B", $cellSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   $need = @()
   for ($c = 0; $c -lt $nCol; $c++) {
     $mx = $g.MeasureString((Get-Plain $cols[$c]), $fCell).Width
@@ -136,7 +136,7 @@ $g.DrawRectangle($penEdge, $tableL, $tableT, $tableW, $tableH)
 
 # 表格下方的提醒句
 if ($note -ne "") {
-  $fNote = New-Object System.Drawing.Font("Microsoft JhengHei", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+  $fNote = New-Object System.Drawing.Font("GenSenRounded JP M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   $nw = $g.MeasureString($note, $fNote).Width
   $ny = $tableT + $tableH + 62
   $g.DrawString($note, $fNote, $bInk, (($CW - $nw)/2), $ny)

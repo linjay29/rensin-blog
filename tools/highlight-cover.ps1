@@ -34,7 +34,7 @@ $g.TextRenderingHint = 'ClearTypeGridFit'
 $bgc = [System.Drawing.ColorTranslator]::FromHtml("#$Bg")
 $g.Clear($bgc)
 
-$font  = New-Object System.Drawing.Font("Microsoft JhengHei", $Size, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$font  = New-Object System.Drawing.Font("GenSenRounded JP B", $Size, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $brush = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslator]::FromHtml("#$Fg"))
 $teal  = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 65, 186, 177))
 $fmt   = New-Object System.Drawing.StringFormat

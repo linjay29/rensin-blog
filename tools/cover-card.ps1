@@ -43,7 +43,7 @@ $g.SmoothingMode = 'AntiAlias'
 $g.TextRenderingHint = 'ClearTypeGridFit'
 $g.DrawImage($img, 0, 0, $W, $H)
 
-$font  = New-Object System.Drawing.Font("Microsoft JhengHei", $Size, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$font  = New-Object System.Drawing.Font("GenSenRounded JP B", $Size, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $brush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 20, 36, 34))
 $teal  = [System.Drawing.Color]::FromArgb(255, 65, 186, 177)
 $fmt   = [System.Drawing.StringFormat]::GenericTypographic

@@ -11,7 +11,7 @@ param(
   [double]$X = 340, [double]$Y = 112,
   [int]$Size = 44, [double]$Angle = -8,
   [string]$Color = "#0B544F",
-  [string]$Font = "Microsoft JhengHei"
+  [string]$Font = "GenSenRounded JP B"
 )
 Add-Type -AssemblyName System.Drawing
 $img = [System.Drawing.Image]::FromFile((Resolve-Path $Src))
