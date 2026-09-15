@@ -805,3 +805,10 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   font-weight:700;letter-spacing:.04em;
   color:var(--ink-mid);
 }
+
+/* 首頁承諾句下面那行解釋：最小、最輕，只做註腳 */
+.hero-why{
+  margin:-.5em 0 1em;
+  font-size:clamp(.92rem,2.6vw,1rem);
+  line-height:1.8;color:var(--ink-dim);
+}
