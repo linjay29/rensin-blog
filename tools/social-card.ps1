@@ -32,7 +32,7 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("源泉圓體 B", "源泉圓體 M")
+$__want = @("GenSenRounded JP R", "GenSenRounded JP R")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
@@ -69,9 +69,9 @@ $mid  = [System.Drawing.Color]::FromArgb(255, 69, 98, 96)    # 次要文字
 $teal = [System.Drawing.Color]::FromArgb(255, 65, 186, 177)  # 名片湖綠，只當點綴
 
 $fmt    = [System.Drawing.StringFormat]::GenericTypographic
-$fTitle = New-Object System.Drawing.Font("源泉圓體 B", 148, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
-$fBul   = New-Object System.Drawing.Font("源泉圓體 M", 62, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
-$fSign  = New-Object System.Drawing.Font("源泉圓體 M", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fTitle = New-Object System.Drawing.Font("GenSenRounded JP R", 148, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fBul   = New-Object System.Drawing.Font("GenSenRounded JP R", 62, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fSign  = New-Object System.Drawing.Font("GenSenRounded JP R", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $brInk  = New-Object System.Drawing.SolidBrush ($ink)
 $brMid  = New-Object System.Drawing.SolidBrush ($mid)
 $brTeal = New-Object System.Drawing.SolidBrush ($teal)

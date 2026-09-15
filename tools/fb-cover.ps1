@@ -21,14 +21,14 @@ param(
   [int]$SubSize = 40,
   [int]$AccentIndex = 0,
   [string]$AccentColor = 'e46084',
-  [string]$FontTitle = '源泉圓體 B',
-  [string]$FontSub   = '源泉圓體 M'
+  [string]$FontTitle = 'GenSenRounded JP R',
+  [string]$FontSub   = 'GenSenRounded JP R'
 )
 
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("源泉圓體 B", "源泉圓體 M")
+$__want = @("GenSenRounded JP R", "GenSenRounded JP R")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {

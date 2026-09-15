@@ -9,7 +9,7 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("源泉圓體 B", "源泉圓體 M")
+$__want = @("GenSenRounded JP R", "GenSenRounded JP R")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
@@ -43,9 +43,9 @@ $g.FillRectangle((New-Object System.Drawing.SolidBrush($white)), 28, 28, $W-56, 
 $penSoft = New-Object System.Drawing.Pen($soft, 6)
 $g.DrawRectangle($penSoft, 46, 46, $W-92, $H-92)
 
-$fTitle = New-Object System.Drawing.Font("源泉圓體 B", 60, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fTitle = New-Object System.Drawing.Font("GenSenRounded JP R", 60, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $itemSize = 44
-$fFoot  = New-Object System.Drawing.Font("源泉圓體 M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fFoot  = New-Object System.Drawing.Font("GenSenRounded JP R", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 
 $bRed  = New-Object System.Drawing.SolidBrush($red)
 $bInk  = New-Object System.Drawing.SolidBrush($ink)
@@ -68,13 +68,13 @@ $left  = 140
 $avail = $W - $left - 40 - 96
 $plain = @()
 foreach ($raw in $items) { $plain += ($raw -replace '</?r>', '') }
-$fItem = New-Object System.Drawing.Font("源泉圓體 B", $itemSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fItem = New-Object System.Drawing.Font("GenSenRounded JP R", $itemSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $maxW = 0
 foreach ($t in $plain) { $mw = $g.MeasureString($t, $fItem).Width; if ($mw -gt $maxW) { $maxW = $mw } }
 while ($maxW -gt $avail -and $itemSize -gt 26) {
   $itemSize -= 2
   $fItem.Dispose()
-  $fItem = New-Object System.Drawing.Font("源泉圓體 B", $itemSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+  $fItem = New-Object System.Drawing.Font("GenSenRounded JP R", $itemSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   $maxW = 0
   foreach ($t in $plain) { $mw = $g.MeasureString($t, $fItem).Width; if ($mw -gt $maxW) { $maxW = $mw } }
 }

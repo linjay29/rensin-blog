@@ -11,12 +11,12 @@ param(
   [double]$X = 340, [double]$Y = 112,
   [int]$Size = 44, [double]$Angle = -8,
   [string]$Color = "#0B544F",
-  [string]$Font = "源泉圓體 B"
+  [string]$Font = "GenSenRounded JP R"
 )
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("源泉圓體 B", "源泉圓體 M")
+$__want = @("GenSenRounded JP R", "GenSenRounded JP R")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
