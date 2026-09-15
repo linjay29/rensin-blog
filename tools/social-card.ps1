@@ -31,6 +31,16 @@ param(
 
 Add-Type -AssemblyName System.Drawing
 
+# 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
+$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
+foreach ($__f in $__want) {
+  if ($__have -notcontains $__f) {
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    exit 1
+  }
+}
+
 $lines = [System.IO.File]::ReadAllLines((Resolve-Path $Text), [System.Text.Encoding]::UTF8) |
          Where-Object { $_.Trim().Length -gt 0 }
 if ($lines.Count -lt 3) { throw "文字檔至少要有標題、一條重點、署名三行" }

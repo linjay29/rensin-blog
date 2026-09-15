@@ -1,4 +1,4 @@
-# IG 精選封面（1080×1920，限動尺寸）
+﻿# IG 精選封面（1080×1920，限動尺寸）
 #
 # 定案配色（2026-09-14 傑哥選的）：蒂芙尼綠底 #81D8D0 ＋ 品牌深綠字 #0b544f，字級 200。
 # 淺底深字在白色的 IG 介面上辨識度最好，圓圈縮小也看得清楚。
@@ -21,6 +21,16 @@ param(
 )
 
 Add-Type -AssemblyName System.Drawing
+
+# 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
+$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
+foreach ($__f in $__want) {
+  if ($__have -notcontains $__f) {
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    exit 1
+  }
+}
 
 $lines = [System.IO.File]::ReadAllLines((Resolve-Path $Text), [System.Text.Encoding]::UTF8) |
          Where-Object { $_.Trim().Length -gt 0 }

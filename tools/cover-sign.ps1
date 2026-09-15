@@ -1,4 +1,4 @@
-# 在封面圖的指定位置寫一行字，可以旋轉——用來把字寫進插畫裡的招牌或顯示燈。
+﻿# 在封面圖的指定位置寫一行字，可以旋轉——用來把字寫進插畫裡的招牌或顯示燈。
 #
 # 用法：
 #   powershell -NoProfile -ExecutionPolicy Bypass -File tools\cover-sign.ps1 `
@@ -14,6 +14,16 @@ param(
   [string]$Font = "GenSenRounded JP B"
 )
 Add-Type -AssemblyName System.Drawing
+
+# 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
+$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
+foreach ($__f in $__want) {
+  if ($__have -notcontains $__f) {
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    exit 1
+  }
+}
 $img = [System.Drawing.Image]::FromFile((Resolve-Path $Src))
 $bmp = New-Object System.Drawing.Bitmap $img.Width, $img.Height
 $g = [System.Drawing.Graphics]::FromImage($bmp)

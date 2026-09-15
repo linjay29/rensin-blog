@@ -10,6 +10,16 @@ param(
 
 Add-Type -AssemblyName System.Drawing
 
+# 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
+$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
+foreach ($__f in $__want) {
+  if ($__have -notcontains $__f) {
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    exit 1
+  }
+}
+
 $json = Get-Content -LiteralPath $Data -Raw -Encoding UTF8 | ConvertFrom-Json
 $title = $json.title
 $cols  = $json.columns
