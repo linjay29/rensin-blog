@@ -11,11 +11,11 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__want = @("源泉圓體 B", "源泉圓體 M")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
-    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-src/fonts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
     exit 1
   }
 }
@@ -50,9 +50,9 @@ $bInk   = New-Object System.Drawing.SolidBrush($ink)
 $bBran  = New-Object System.Drawing.SolidBrush($brand)
 $bSoft  = New-Object System.Drawing.SolidBrush($soft)
 
-$fTitle = New-Object System.Drawing.Font("GenSenRounded JP B", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
-$fHead  = New-Object System.Drawing.Font("GenSenRounded JP B", 34, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
-$fFoot  = New-Object System.Drawing.Font("GenSenRounded JP M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fTitle = New-Object System.Drawing.Font("源泉圓體 B", 58, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fHead  = New-Object System.Drawing.Font("源泉圓體 B", 34, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fFoot  = New-Object System.Drawing.Font("源泉圓體 M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 
 # 標題（紅字置中，仿粗）
 $ts = $g.MeasureString($title, $fTitle)
@@ -73,7 +73,7 @@ $cellSize = 34
 function Get-Plain($t) { return ($t -replace '</?r>', '') }
 $fitted = $false
 while (-not $fitted -and $cellSize -gt 20) {
-  $fCell = New-Object System.Drawing.Font("GenSenRounded JP B", $cellSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+  $fCell = New-Object System.Drawing.Font("源泉圓體 B", $cellSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   $need = @()
   for ($c = 0; $c -lt $nCol; $c++) {
     $mx = $g.MeasureString((Get-Plain $cols[$c]), $fCell).Width
@@ -146,7 +146,7 @@ $g.DrawRectangle($penEdge, $tableL, $tableT, $tableW, $tableH)
 
 # 表格下方的提醒句
 if ($note -ne "") {
-  $fNote = New-Object System.Drawing.Font("GenSenRounded JP M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+  $fNote = New-Object System.Drawing.Font("源泉圓體 M", 30, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
   $nw = $g.MeasureString($note, $fNote).Width
   $ny = $tableT + $tableH + 62
   $g.DrawString($note, $fNote, $bInk, (($CW - $nw)/2), $ny)

@@ -21,18 +21,18 @@ param(
   [int]$SubSize = 40,
   [int]$AccentIndex = 0,
   [string]$AccentColor = 'e46084',
-  [string]$FontTitle = 'GenSenRounded JP B',
-  [string]$FontSub   = 'GenSenRounded JP M'
+  [string]$FontTitle = '源泉圓體 B',
+  [string]$FontSub   = '源泉圓體 M'
 )
 
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__want = @("源泉圓體 B", "源泉圓體 M")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
-    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-src/fonts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
     exit 1
   }
 }

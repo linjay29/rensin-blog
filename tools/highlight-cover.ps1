@@ -23,11 +23,11 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 # 字型檢查：圓體沒裝就停下來，不要默默退回正黑體
-$__want = @("GenSenRounded JP B", "GenSenRounded JP M")
+$__want = @("源泉圓體 B", "源泉圓體 M")
 $__have = (New-Object System.Drawing.Text.InstalledFontCollection).Families | ForEach-Object { $_.Name }
 foreach ($__f in $__want) {
   if ($__have -notcontains $__f) {
-    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-srconts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
+    Write-Error ("找不到字型「" + $__f + "」。請先安裝源泉圓體（assets-src/fonts\GenSenRounded-*.ttc，或 github.com/ButTaiwan/gensen-font），否則出圖會變成正黑體。")
     exit 1
   }
 }
@@ -44,7 +44,7 @@ $g.TextRenderingHint = 'ClearTypeGridFit'
 $bgc = [System.Drawing.ColorTranslator]::FromHtml("#$Bg")
 $g.Clear($bgc)
 
-$font  = New-Object System.Drawing.Font("GenSenRounded JP B", $Size, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$font  = New-Object System.Drawing.Font("源泉圓體 B", $Size, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $brush = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslator]::FromHtml("#$Fg"))
 $teal  = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 65, 186, 177))
 $fmt   = New-Object System.Drawing.StringFormat
