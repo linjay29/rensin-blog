@@ -20,7 +20,9 @@ param(
   [int]$Size = 104,
   [int]$SubSize = 40,
   [int]$AccentIndex = 0,
-  [string]$AccentColor = 'e46084'
+  [string]$AccentColor = 'e46084',
+  [string]$FontTitle = 'GenSenRounded JP B',
+  [string]$FontSub   = 'GenSenRounded JP M'
 )
 
 Add-Type -AssemblyName System.Drawing
@@ -37,8 +39,8 @@ $g.SmoothingMode = 'AntiAlias'
 $g.TextRenderingHint = 'ClearTypeGridFit'
 $g.Clear([System.Drawing.ColorTranslator]::FromHtml("#$Bg"))
 
-$fontT = New-Object System.Drawing.Font("Microsoft JhengHei", $Size, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
-$fontS = New-Object System.Drawing.Font("Microsoft JhengHei", $SubSize, [System.Drawing.FontStyle]::Bold, [System.Drawing.GraphicsUnit]::Pixel)
+$fontT = New-Object System.Drawing.Font($FontTitle, $Size, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
+$fontS = New-Object System.Drawing.Font($FontSub, $SubSize, [System.Drawing.FontStyle]::Regular, [System.Drawing.GraphicsUnit]::Pixel)
 $ink   = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslator]::FromHtml("#$Fg"))
 $dim   = New-Object System.Drawing.SolidBrush ([System.Drawing.ColorTranslator]::FromHtml("#2c3b37"))
 $teal  = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 60, 180, 168))
