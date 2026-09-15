@@ -797,3 +797,11 @@ a.hero-addr:hover{background:#d3eeeb;border-color:#d3eeeb}
   .prose .week-table th,
   .prose .week-table td{padding-left:8px;padding-right:8px;font-size:.84rem}
 }
+
+/* 首頁大標下的承諾句：比標語小一階、比內文重一點，夾在信條與三個主題中間 */
+.hero-promise{
+  margin:-.4em 0 .9em;
+  font-size:clamp(1.05rem,3.4vw,1.28rem);
+  font-weight:700;letter-spacing:.04em;
+  color:var(--ink-mid);
+}
